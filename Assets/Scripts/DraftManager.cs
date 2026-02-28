@@ -45,6 +45,12 @@ public class DraftManager : MonoBehaviour
     public int currentRerollCost = 1;
     private int currentCoins;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;
+    public AudioClip buyCardSfx;
+    public AudioClip rerollSfx;
+    public AudioClip viewAllSfx;
+
     public List<CardData> currentShopCards = new List<CardData>();
     public List<CardData> playerDeck = new List<CardData>(); 
 
@@ -74,6 +80,11 @@ public class DraftManager : MonoBehaviour
         if (currentCoins >= currentRerollCost)
         {
             currentCoins -= currentRerollCost;
+            if (sfxSource != null && rerollSfx != null)
+                {
+                    sfxSource.clip = rerollSfx;
+                    sfxSource.PlayDelayed(0.1f);
+                }
             currentRerollCost++;
             
             UpdateUI();
@@ -91,6 +102,8 @@ public class DraftManager : MonoBehaviour
         if (currentCoins >= cardToBuy.cost)
         {
             currentCoins -= cardToBuy.cost;
+            if (sfxSource != null && buyCardSfx != null)
+            sfxSource.PlayOneShot(buyCardSfx);
 
             if (cardToBuy.cardType == CardType.Special)
             {
@@ -130,27 +143,30 @@ public class DraftManager : MonoBehaviour
         }
     }
 
-    public void OpenFullDeckModal()
+public void OpenFullDeckModal()
+{
+    if (sfxSource != null && viewAllSfx != null)
+        sfxSource.PlayOneShot(viewAllSfx);
+
+    if (fullDeckModal == null || fullDeckContent == null) return;
+
+    fullDeckModal.SetActive(true);
+
+    foreach (Transform child in fullDeckContent)
     {
-        if (fullDeckModal == null || fullDeckContent == null) return;
-
-        fullDeckModal.SetActive(true);
-
-        foreach (Transform child in fullDeckContent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (CardData card in playerDeck)
-        {
-            GameObject newCard = Instantiate(deckCardPrefab, fullDeckContent);
-            Image cardImage = newCard.GetComponent<Image>();
-            if (cardImage != null) cardImage.sprite = card.cardIcon;
-
-            CardDisplay display = newCard.GetComponent<CardDisplay>();
-            if (display != null) display.SetupCard(card);
-        }
+        Destroy(child.gameObject);
     }
+
+    foreach (CardData card in playerDeck)
+    {
+        GameObject newCard = Instantiate(deckCardPrefab, fullDeckContent);
+        Image cardImage = newCard.GetComponent<Image>();
+        if (cardImage != null) cardImage.sprite = card.cardIcon;
+
+        CardDisplay display = newCard.GetComponent<CardDisplay>();
+        if (display != null) display.SetupCard(card);
+    }
+}
 
     public void CloseFullDeckModal()
     {

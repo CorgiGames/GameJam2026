@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 
 public class Turret : MonoBehaviour
@@ -14,6 +16,10 @@ public class Turret : MonoBehaviour
     [SerializeField] private float targetingRange = 5f;
     [SerializeField] private float rotationSpeed = 0f;
     [SerializeField] private float bps = 1f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip shootSfx;
 
     private Transform target;
     private float timeUntilFire;
@@ -42,12 +48,15 @@ public class Turret : MonoBehaviour
 
     }
 
-    private void Shoot()
-    {
-        GameObject bulletObj = Instantiate(bulletPrefab, firingPoint.position, Quaternion.identity);
-        Bullet bulletScript = bulletObj.GetComponent<Bullet>();
-        bulletScript.SetTarget(target);
-    }
+  private void Shoot()
+{
+    if (sfxSource != null && shootSfx != null)
+        sfxSource.PlayOneShot(shootSfx);
+
+    GameObject bulletObj = Instantiate(bulletPrefab, firingPoint.position, Quaternion.identity);
+    Bullet bulletScript = bulletObj.GetComponent<Bullet>();
+    bulletScript.SetTarget(target);
+}
     private void FindTarget()
     {
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, targetingRange, (Vector2)
@@ -74,8 +83,10 @@ public class Turret : MonoBehaviour
     }
 
     private void OnDrawGizmosSelected()
-    {
-        Handles.color = Color.cyan;
-        Handles.DrawWireDisc(transform.position, transform.forward, targetingRange);
-    }
+{
+#if UNITY_EDITOR
+    Handles.color = Color.cyan;
+    Handles.DrawWireDisc(transform.position, transform.forward, targetingRange);
+#endif
+}
 }
