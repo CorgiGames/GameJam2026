@@ -4333,6 +4333,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8a985216ca7fab4469dd76f7cc608c4b, type: 2}
   - {fileID: 11400000, guid: cce9e860857ffc241a9a5e6050e46767, type: 2}
   - {fileID: 11400000, guid: bcca5e53f4717494da2424fed6f5a357, type: 2}
+  playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}
+  nextSceneName: Tower
   cardSlots:
   - {fileID: 1308016290}
   - {fileID: 1249472198}

@@ -2783,7 +2783,7 @@ SpriteRenderer:
   m_Size: {x: 1.87, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &235500582
 PrefabInstance:
@@ -3306,7 +3306,7 @@ SpriteRenderer:
   m_Size: {x: 1.87, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &267457725 stripped
 Transform:
@@ -4056,7 +4056,7 @@ SpriteRenderer:
   m_Size: {x: 1.87, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &347322813
 PrefabInstance:
@@ -8136,7 +8136,7 @@ SpriteRenderer:
   m_Size: {x: 1.87, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &695180781 stripped
 Transform:
@@ -10115,7 +10115,7 @@ SpriteRenderer:
   m_Size: {x: 1.87, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &969765574
 GameObject:
@@ -21477,11 +21477,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1734856867899942701, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1402382
+      value: 0.14520264
       objectReference: {fileID: 0}
     - target: {fileID: 1734856867899942701, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1402382
+      value: 0.14520264
       objectReference: {fileID: 0}
     - target: {fileID: 1734856867899942701, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: m_LocalPosition.x
