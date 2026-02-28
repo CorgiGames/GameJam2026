@@ -20,6 +20,9 @@ public class DraftManager : MonoBehaviour
     private int currentCoins;
 
     public List<CardData> currentShopCards = new List<CardData>();
+    
+    // List to store purchased cards
+    public List<CardData> playerDeck = new List<CardData>(); 
 
     void Start()
     {
@@ -49,6 +52,41 @@ public class DraftManager : MonoBehaviour
         }
     }
 
+    // Function triggered when a card slot is clicked
+    public void BuyCard(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= currentShopCards.Count) return;
+
+        CardData cardToBuy = currentShopCards[slotIndex];
+
+        // Check if the slot is already empty (purchased)
+        if (cardToBuy == null) return;
+
+        if (currentCoins >= cardToBuy.cost)
+        {
+            currentCoins -= cardToBuy.cost;
+            playerDeck.Add(cardToBuy);
+            
+            // Mark slot as empty in the backend list
+            currentShopCards[slotIndex] = null;
+
+            // Update specific slot UI to appear empty
+            cardSlots[slotIndex].sprite = null;
+            cardSlots[slotIndex].color = new Color(1, 1, 1, 0); // Make transparent
+
+            // Disable button interaction for this slot
+            Button slotButton = cardSlots[slotIndex].GetComponent<Button>();
+            if (slotButton != null) slotButton.interactable = false;
+
+            UpdateUI();
+            Debug.Log("Card purchased: " + cardToBuy.cardName);
+        }
+        else
+        {
+            Debug.LogWarning("Not enough coins to buy this card.");
+        }
+    }
+
     public void RollCards()
     {
         if (allCards.Count == 0)
@@ -63,7 +101,14 @@ public class DraftManager : MonoBehaviour
         {
             CardData selectedCard = GetRandomCardWithWeights();
             currentShopCards.Add(selectedCard);
+            
+            // Assign new sprite and reset alpha color to fully visible
             cardSlots[i].sprite = selectedCard.cardIcon;
+            cardSlots[i].color = new Color(1, 1, 1, 1); 
+
+            // Re-enable button interaction for the new card
+            Button slotButton = cardSlots[i].GetComponent<Button>();
+            if (slotButton != null) slotButton.interactable = true;
         }
 
         Debug.Log("Cards have been successfully rolled. Next reroll cost: " + currentRerollCost);
