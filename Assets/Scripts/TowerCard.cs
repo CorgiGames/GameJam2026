@@ -56,6 +56,33 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
                         Debug.LogWarning($"Card {cardData.cardName} is a Unit but has no Prefab assigned!");
                     }
                 }
+                else if (cardData.cardName == "Decoy")
+                {
+                    if (cardData.characterPrefab != null)
+                    {
+                        // Call the immediate spawn
+                        CharacterSpawner.main.SpawnDecoyOnRandomPathPoint(cardData.characterPrefab);
+
+                        // Run the combat manager logic
+                        combatManager.PlayCard(this.gameObject, cardData);
+                    }
+                    else
+                    {
+                        Debug.LogError("Decoy card is missing a prefab!");
+                    }
+                }
+                else if (cardData.cardType == CardType.Buff && cardData.cardName == "Range")
+                {
+                    // 1. Tell the spawner to buff all existing turrets
+                    Turret.OnRangeBuffReceived?.Invoke(1.5f);
+
+                    // 2. Play the card (cooldown/cost)
+                    combatManager.PlayCard(this.gameObject, cardData);
+                }
+                else
+                {
+                    combatManager.PlayCard(this.gameObject, cardData);
+                }
             }
             else
             {
