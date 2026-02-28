@@ -45,6 +45,11 @@ public class DraftManager : MonoBehaviour
     public int currentRerollCost = 1;
     private int currentCoins;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;
+    public AudioClip buyCardSfx;
+    public AudioClip rerollSfx;
+
     public List<CardData> currentShopCards = new List<CardData>();
     public List<CardData> playerDeck = new List<CardData>(); 
 
@@ -74,6 +79,11 @@ public class DraftManager : MonoBehaviour
         if (currentCoins >= currentRerollCost)
         {
             currentCoins -= currentRerollCost;
+            if (sfxSource != null && rerollSfx != null)
+                {
+                    sfxSource.clip = rerollSfx;
+                    sfxSource.PlayDelayed(0.1f);
+                }
             currentRerollCost++;
             
             UpdateUI();
@@ -91,6 +101,8 @@ public class DraftManager : MonoBehaviour
         if (currentCoins >= cardToBuy.cost)
         {
             currentCoins -= cardToBuy.cost;
+            if (sfxSource != null && buyCardSfx != null)
+            sfxSource.PlayOneShot(buyCardSfx);
 
             if (cardToBuy.cardType == CardType.Special)
             {
