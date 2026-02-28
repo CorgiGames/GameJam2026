@@ -26,6 +26,10 @@ public class DraftManager : MonoBehaviour
     public Transform fullDeckContent;
     public Button closeModalButton;
 
+    [Header("Card Detail Modal")]
+    public GameObject cardDetailModal;
+    public Image enlargedCardImage;
+
     [Header("Deck Stats UI")]
     public TextMeshProUGUI unitCountText;
     public TextMeshProUGUI buffCountText;
@@ -44,9 +48,9 @@ public class DraftManager : MonoBehaviour
         currentCoins = startingCoins;
         currentVisibleCards = 0;
 
-        // Ensure modal is closed and View All button is hidden at the start
         if (fullDeckModal != null) fullDeckModal.SetActive(false);
         if (viewAllButton != null) viewAllButton.gameObject.SetActive(false);
+        if (cardDetailModal != null) cardDetailModal.SetActive(false);
 
         UpdateUI();
         UpdateDeckStatsUI(); 
@@ -85,35 +89,29 @@ public class DraftManager : MonoBehaviour
 
             if (cardToBuy.cardType == CardType.Special)
             {
-                Debug.Log("Special card purchased: " + cardToBuy.cardName + ". Instant effect triggered. Not added to deck.");
+                Debug.Log("Special card purchased: " + cardToBuy.cardName + ". Instant effect triggered.");
             }
             else
             {
                 playerDeck.Add(cardToBuy);
                 
-                // Add to bottom panel only if the limit is not reached
                 if (currentVisibleCards < maxVisibleCards)
                 {
                     GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
                     Image cardImage = newDeckCard.GetComponent<Image>();
-                    
-                    if (cardImage != null)
-                    {
-                        cardImage.sprite = cardToBuy.cardIcon;
-                    }
+                    if (cardImage != null) cardImage.sprite = cardToBuy.cardIcon;
+
+                    // Pass data to CardDisplay
+                    CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
+                    if (display != null) display.SetupCard(cardToBuy);
 
                     currentVisibleCards++;
 
-                    // Activate the View All button when the first card is added, keep it at the end
                     if (viewAllButton != null)
                     {
                         viewAllButton.gameObject.SetActive(true);
                         viewAllButton.transform.SetAsLastSibling();
                     }
-                }
-                else
-                {
-                    Debug.Log("Card purchased but bottom panel is full. Available in View All modal.");
                 }
 
                 UpdateDeckStatsUI(); 
@@ -128,42 +126,45 @@ public class DraftManager : MonoBehaviour
         }
     }
 
-    // Opens the full deck modal and populates it with all purchased non-special cards
     public void OpenFullDeckModal()
     {
         if (fullDeckModal == null || fullDeckContent == null) return;
 
         fullDeckModal.SetActive(true);
 
-        // Clear existing items in the modal to prevent duplicates
         foreach (Transform child in fullDeckContent)
         {
             Destroy(child.gameObject);
         }
 
-        // Instantiate all cards currently in the player's deck
         foreach (CardData card in playerDeck)
         {
             GameObject newCard = Instantiate(deckCardPrefab, fullDeckContent);
             Image cardImage = newCard.GetComponent<Image>();
-            
-            if (cardImage != null)
-            {
-                cardImage.sprite = card.cardIcon;
-            }
-        }
+            if (cardImage != null) cardImage.sprite = card.cardIcon;
 
-        Debug.Log("Full deck modal opened.");
+            // Pass data to CardDisplay
+            CardDisplay display = newCard.GetComponent<CardDisplay>();
+            if (display != null) display.SetupCard(card);
+        }
     }
 
-    // Closes the full deck modal
     public void CloseFullDeckModal()
     {
-        if (fullDeckModal != null)
-        {
-            fullDeckModal.SetActive(false);
-            Debug.Log("Full deck modal closed.");
-        }
+        if (fullDeckModal != null) fullDeckModal.SetActive(false);
+    }
+
+    public void OpenCardDetailModal(CardData cardData)
+    {
+        if (cardDetailModal == null || enlargedCardImage == null) return;
+        
+        enlargedCardImage.sprite = cardData.cardIcon;
+        cardDetailModal.SetActive(true);
+    }
+
+    public void CloseCardDetailModal()
+    {
+        if (cardDetailModal != null) cardDetailModal.SetActive(false);
     }
 
     private void UpdateDeckStatsUI()
@@ -186,11 +187,7 @@ public class DraftManager : MonoBehaviour
 
     public void RollCards()
     {
-        if (allCards.Count == 0)
-        {
-            Debug.LogError("All Cards list is empty. Please assign CardData objects.");
-            return;
-        }
+        if (allCards.Count == 0) return;
 
         currentShopCards.Clear();
 
@@ -200,6 +197,10 @@ public class DraftManager : MonoBehaviour
             currentShopCards.Add(selectedCard);
             
             cardSlots[i].sprite = selectedCard.cardIcon;
+
+            // Pass data to CardDisplay on the main slots
+            CardDisplay display = cardSlots[i].GetComponent<CardDisplay>();
+            if (display != null) display.SetupCard(selectedCard);
         }
 
         UpdateUI();
@@ -260,10 +261,7 @@ public class DraftManager : MonoBehaviour
             }
         }
 
-        if (filteredCards.Count == 0)
-        {
-            return allCards[Random.Range(0, allCards.Count)];
-        }
+        if (filteredCards.Count == 0) return allCards[Random.Range(0, allCards.Count)];
 
         return filteredCards[Random.Range(0, filteredCards.Count)];
     }
