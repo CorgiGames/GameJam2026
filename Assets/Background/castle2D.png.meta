@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c5e93e6f18772a64299bcb4122d7189a
+guid: 25c119020bbb9be47a67c2347592256a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5119980863986964875
-    second: castle_0
+      213: 3695169981317991019
+    second: castle2D_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: castle_0
+      name: castle2D_0
       rect:
         serializedVersion: 2
-        x: 124
-        y: 8
-        width: 1102
-        height: 690
+        x: 373
+        y: 73
+        width: 680
+        height: 623
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5766241f78c22f8b0800000000000000
-      internalID: -5119980863986964875
+      spriteID: b6a45292581e74330800000000000000
+      internalID: 3695169981317991019
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      castle_0: -5119980863986964875
+      castle2D_0: 3695169981317991019
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
