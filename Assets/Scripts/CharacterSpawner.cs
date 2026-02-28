@@ -4,8 +4,10 @@ using UnityEngine.Events;
 
 public class CharacterSpawner : MonoBehaviour
 {
-
     public static CharacterSpawner main;
+
+    // Add this line to fix the compiler error in CharacterMovement
+    public static UnityEvent onCharacterDestroy = new UnityEvent();
 
     private void Awake()
     {
