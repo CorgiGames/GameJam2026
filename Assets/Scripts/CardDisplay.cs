@@ -20,7 +20,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
         
         if (draftManager == null)
         {
-            Debug.LogError("CardDisplay: DraftManager not found in the scene.");
+            Debug.Log("CardDisplay: DraftManager not found in the scene.");
         }
     }
 

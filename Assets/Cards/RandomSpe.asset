@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Random
   cardType: 3
+  specialEffect: 1
   cost: 6
   cardIcon: {fileID: 8621175409208223273, guid: 1b0e181b818b65e42b7dbde4e419aed2, type: 3}
+  characterPrefab: {fileID: 0}

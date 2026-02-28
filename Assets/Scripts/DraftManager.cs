@@ -6,6 +6,38 @@ using UnityEngine.SceneManagement;
 
 public class DraftManager : MonoBehaviour
 {
+    [Header("Random Card Popup")]
+public GameObject randomCardPopup;
+public Image popupImage;
+public Sprite cardBackSprite; // Kartın arka yüzü görseli
+private System.Collections.IEnumerator ShowRandomCardSequence(CardData wonCard)
+{
+    // Güvenlik kontrolü
+    if (randomCardPopup == null || popupImage == null)
+    {
+        Debug.LogError("[Draft] HATA: randomCardPopup veya popupImage Inspector'da atanmamış!");
+        ProcessCardAddition(wonCard);
+        yield break;
+    }
+
+    // Paneli aç ve orada bırak
+    randomCardPopup.SetActive(true);
+    Debug.Log("[Draft] Popup açıldı. Eğer ekranda görmüyorsan Hierarchy'den objeyi seçip RectTransform ayarlarını kontrol et.");
+    
+    // Önce kartın arkasını göster
+    popupImage.sprite = cardBackSprite;
+    
+    // 1 saniye sonra kartı çevir
+    yield return new WaitForSeconds(2.0f); 
+    
+    popupImage.sprite = wonCard.cardIcon;
+    Debug.Log($"[Draft] Kart çevrildi: {wonCard.cardName}");
+
+
+    ProcessCardAddition(wonCard);
+
+}
+
     [Header("Card Database")]
     public List<CardData> allCards;
 
@@ -41,7 +73,7 @@ public class DraftManager : MonoBehaviour
     public TextMeshProUGUI sabotageCountText;
 
     [Header("Economy")]
-    public int startingCoins = 100;
+    public int startingCoins = 50;
     public int currentRerollCost = 1;
     private int currentCoins;
 
@@ -92,55 +124,100 @@ public class DraftManager : MonoBehaviour
         }
     }
 
-    public void BuyCard(int slotIndex)
+public void BuyCard(int slotIndex)
+{
+    if (slotIndex < 0 || slotIndex >= currentShopCards.Count) return;
+
+    CardData cardToBuy = currentShopCards[slotIndex];
+    if (cardToBuy == null) return;
+
+    if (currentCoins >= cardToBuy.cost)
     {
-        if (slotIndex < 0 || slotIndex >= currentShopCards.Count) return;
-
-        CardData cardToBuy = currentShopCards[slotIndex];
-        if (cardToBuy == null) return;
-
-        if (currentCoins >= cardToBuy.cost)
-        {
-            currentCoins -= cardToBuy.cost;
-            if (sfxSource != null && buyCardSfx != null)
+        currentCoins -= cardToBuy.cost;
+        if (sfxSource != null && buyCardSfx != null)
             sfxSource.PlayOneShot(buyCardSfx);
 
-            if (cardToBuy.cardType == CardType.Special)
-            {
-                Debug.Log("Special card purchased: " + cardToBuy.cardName + ". Instant effect triggered.");
-            }
+        // LOG 1: Kartın tipini ve etkisini kontrol et
+        Debug.Log($"[BUY] Kart Alındı: {cardToBuy.cardName} | Tip: {cardToBuy.cardType} | Etki: {cardToBuy.specialEffect}");
+
+        if (cardToBuy.cardType == CardType.Special)
+        {
+if (cardToBuy.specialEffect == SpecialEffect.RandomCard)
+{
+    List<CardData> possibleCards = allCards.FindAll(c => c.cardType != CardType.Special);
+    if (possibleCards.Count > 0)
+    {
+        CardData randomCard = possibleCards[Random.Range(0, possibleCards.Count)];
+        // Coroutine'i başlat
+        StartCoroutine(ShowRandomCardSequence(randomCard));
+    }
+}
             else
             {
-                playerDeck.Add(cardToBuy);
-                
-                if (currentVisibleCards < maxVisibleCards)
-                {
-                    GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
-                    Image cardImage = newDeckCard.GetComponent<Image>();
-                    if (cardImage != null) cardImage.sprite = cardToBuy.cardIcon;
-
-                    CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
-                    if (display != null) display.SetupCard(cardToBuy);
-
-                    currentVisibleCards++;
-
-                    if (viewAllButton != null)
-                    {
-                        viewAllButton.gameObject.SetActive(true);
-                        viewAllButton.transform.SetAsLastSibling();
-                    }
-                }
-
-                UpdateDeckStatsUI(); 
+                Debug.LogWarning($"[SPECIAL] Bu kartın etkisi ({cardToBuy.specialEffect}) henüz kodlanmamış!");
             }
-            
-            UpdateUI();
-            RollCards();
         }
+        else
+        {
+            ProcessCardAddition(cardToBuy);
+        }
+        
+        UpdateUI();
+        RollCards();
+    }
+
         else
         {
             Debug.LogWarning("Insufficient coins.");
         }
+    }
+
+    private void ProcessCardAddition(CardData cardToAdd)
+    {
+        if (cardToAdd == null) {
+            Debug.LogError("[Draft] Eklenecek kart verisi null!");
+            return;
+        }
+
+        playerDeck.Add(cardToAdd);
+        Debug.Log($"[Draft] Deste Güncellendi. Mevcut deste boyutu: {playerDeck.Count}");
+        
+        // Görsel ekleme mantığı
+        if (currentVisibleCards < maxVisibleCards)
+        {
+            if (deckCardPrefab == null || deckPanel == null)
+            {
+                Debug.LogError("[Draft] HATA: deckCardPrefab veya deckPanel Inspector'da atanmamış!");
+                return;
+            }
+
+            GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
+            
+            // Kartın görselini ayarla
+            Image cardImage = newDeckCard.GetComponent<Image>();
+            if (cardImage != null) 
+            {
+                cardImage.sprite = cardToAdd.cardIcon;
+            }
+
+            // Kartın verilerini CardDisplay'e aktar (Sağ tık detay için kritik)
+            CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
+            if (display != null) 
+            {
+                display.SetupCard(cardToAdd);
+            }
+
+            currentVisibleCards++;
+            Debug.Log($"[Draft] UI Slot eklendi. Görünür kart sayısı: {currentVisibleCards}");
+
+            if (viewAllButton != null)
+            {
+                viewAllButton.gameObject.SetActive(true);
+                viewAllButton.transform.SetAsLastSibling();
+            }
+        }
+
+        UpdateDeckStatsUI(); 
     }
 
 public void OpenFullDeckModal()
@@ -299,4 +376,13 @@ public void OpenFullDeckModal()
 
         return filteredCards[Random.Range(0, filteredCards.Count)];
     }
+
+    public void CloseRandomCardPopup()
+{
+    if (randomCardPopup != null)
+    {
+        randomCardPopup.SetActive(false);
+        Debug.Log("[Draft] Random kart paneli kapatıldı.");
+    }
+}
 }
