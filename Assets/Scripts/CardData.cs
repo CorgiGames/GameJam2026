@@ -5,7 +5,7 @@ public enum CardType
 { 
     Unit, 
     Buff, 
-    Debuff,
+    Sabotage,
     Special 
 }
 
