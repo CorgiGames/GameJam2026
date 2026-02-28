@@ -2,11 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DraftManager : MonoBehaviour
 {
     [Header("Card Database")]
     public List<CardData> allCards;
+
+    [Header("Data & Scene Management")]
+    public PlayerDeckData playerDeckData;
+    public string nextSceneName = "Tower";
 
     [Header("UI References")]
     public Image[] cardSlots;
@@ -101,7 +106,6 @@ public class DraftManager : MonoBehaviour
                     Image cardImage = newDeckCard.GetComponent<Image>();
                     if (cardImage != null) cardImage.sprite = cardToBuy.cardIcon;
 
-                    // Pass data to CardDisplay
                     CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
                     if (display != null) display.SetupCard(cardToBuy);
 
@@ -143,7 +147,6 @@ public class DraftManager : MonoBehaviour
             Image cardImage = newCard.GetComponent<Image>();
             if (cardImage != null) cardImage.sprite = card.cardIcon;
 
-            // Pass data to CardDisplay
             CardDisplay display = newCard.GetComponent<CardDisplay>();
             if (display != null) display.SetupCard(card);
         }
@@ -198,7 +201,6 @@ public class DraftManager : MonoBehaviour
             
             cardSlots[i].sprite = selectedCard.cardIcon;
 
-            // Pass data to CardDisplay on the main slots
             CardDisplay display = cardSlots[i].GetComponent<CardDisplay>();
             if (display != null) display.SetupCard(selectedCard);
         }
@@ -239,7 +241,21 @@ public class DraftManager : MonoBehaviour
 
     private void EndDraftPhase()
     {
-        Debug.Log("Draft Phase Complete. Player has no valid moves left.");
+        Debug.Log("Draft Phase Complete. Saving deck and loading next scene.");
+
+        if (playerDeckData != null)
+        {
+            playerDeckData.ClearDeck(); // Önceki turdan kalan verileri temizler
+            playerDeckData.savedDeck.AddRange(playerDeck); // Güncel desteyi kaydeder
+        }
+        else
+        {
+            Debug.LogError("PlayerDeckData is not assigned in the Inspector!");
+            return;
+        }
+
+        // Geçiş yapılacak sahneyi yükler
+        SceneManager.LoadScene(nextSceneName);
     }
 
     private CardData GetRandomCardWithWeights()
