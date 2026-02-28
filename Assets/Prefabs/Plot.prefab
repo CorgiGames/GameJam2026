@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7221583879205414322}
   - component: {fileID: 8221092718097405748}
   - component: {fileID: 3630155893358723078}
+  - component: {fileID: -6389708483932057513}
   m_Layer: 0
   m_Name: Plot
   m_TagString: Untagged
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.106255054, a: 0.2784314}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -138,3 +139,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-6389708483932057513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5840327982206115031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a09fe3fc94f2e64facc8bfb4d1d2757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Plot
+  sr: {fileID: 8221092718097405748}
+  hoverColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
