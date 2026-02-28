@@ -9008,6 +9008,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7221583879205414322, guid: 8da51812e91c47f45aafa26cec646ea3, type: 3}
   m_PrefabInstance: {fileID: 1770934625}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &813854959 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+  m_PrefabInstance: {fileID: 9056329304342209971}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &815796723 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7221583879205414322, guid: 8da51812e91c47f45aafa26cec646ea3, type: 3}
@@ -16854,6 +16859,7 @@ GameObject:
   - component: {fileID: 1626609652}
   - component: {fileID: 1626609651}
   - component: {fileID: 1626609653}
+  - component: {fileID: 1626609654}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -16931,6 +16937,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   towerPrefabs:
   - {fileID: 5055746184770828648, guid: dc37a2ab796073e41aae8e2709161cfb, type: 3}
+--- !u!114 &1626609654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626609650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03378ba98f0e0844ae19ad524d11949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  characterPrefabs:
+  - {fileID: 813854959}
+  - {fileID: 1878127125}
+  - {fileID: 1299247960}
+  - {fileID: 1747555092}
+  baseCharacters: 8
+  characterPerSecond: 0.5
+  timeBetweenWaves: 5
+  difficultyScalingFactor: 0.75
 --- !u!1001 &1626919866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19399,6 +19426,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7221583879205414322, guid: 8da51812e91c47f45aafa26cec646ea3, type: 3}
   m_PrefabInstance: {fileID: 1381369350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1878127125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+  m_PrefabInstance: {fileID: 1991645504}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1885913769
 PrefabInstance:
