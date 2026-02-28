@@ -38,7 +38,7 @@ public class DraftManager : MonoBehaviour
     [Header("Deck Stats UI")]
     public TextMeshProUGUI unitCountText;
     public TextMeshProUGUI buffCountText;
-    public TextMeshProUGUI debuffCountText;
+    public TextMeshProUGUI sabotageCountText;
 
     [Header("Economy")]
     public int startingCoins = 100;
@@ -190,18 +190,18 @@ public void OpenFullDeckModal()
     {
         int unitCount = 0;
         int buffCount = 0;
-        int debuffCount = 0;
+        int sabotageCount = 0;
 
         foreach (CardData card in playerDeck)
         {
             if (card.cardType == CardType.Unit) unitCount++;
             else if (card.cardType == CardType.Buff) buffCount++;
-            else if (card.cardType == CardType.Debuff) debuffCount++;
+            else if (card.cardType == CardType.Sabotage) sabotageCount++;
         }
 
         if (unitCountText != null) unitCountText.text = "Unit: " + unitCount;
         if (buffCountText != null) buffCountText.text = "Buff: " + buffCount;
-        if (debuffCountText != null) debuffCountText.text = "Debuff: " + debuffCount;
+        if (sabotageCountText != null) sabotageCountText.text = "Sabotage: " + sabotageCount;
     }
 
     public void RollCards()
@@ -261,8 +261,10 @@ public void OpenFullDeckModal()
 
         if (playerDeckData != null)
         {
-            playerDeckData.ClearDeck(); // Önceki turdan kalan verileri temizler
-            playerDeckData.savedDeck.AddRange(playerDeck); // Güncel desteyi kaydeder
+            // Clears data from the previous round
+            playerDeckData.ClearDeck(); 
+            // Saves the current deck
+            playerDeckData.savedDeck.AddRange(playerDeck); 
         }
         else
         {
@@ -270,7 +272,7 @@ public void OpenFullDeckModal()
             return;
         }
 
-        // Geçiş yapılacak sahneyi yükler
+        // Loads the next scene
         SceneManager.LoadScene(nextSceneName);
     }
 
@@ -281,7 +283,7 @@ public void OpenFullDeckModal()
 
         if (roll < 40) selectedType = CardType.Unit;
         else if (roll < 65) selectedType = CardType.Buff;
-        else if (roll < 90) selectedType = CardType.Debuff;
+        else if (roll < 90) selectedType = CardType.Sabotage;
         else selectedType = CardType.Special;
 
         List<CardData> filteredCards = new List<CardData>();

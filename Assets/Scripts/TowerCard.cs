@@ -44,6 +44,18 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
             if (combatManager != null && cardData != null)
             {
                 combatManager.PlayCard(this.gameObject, cardData);
+                if (cardData.cardType == CardType.Unit)
+                {
+                    if (cardData.characterPrefab != null)
+                    {
+                        // Trigger the spawner we created earlier
+                        CharacterSpawner.main.SpawnCharacter(cardData.characterPrefab);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Card {cardData.cardName} is a Unit but has no Prefab assigned!");
+                    }
+                }
             }
             else
             {
@@ -51,4 +63,5 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+   
 }
