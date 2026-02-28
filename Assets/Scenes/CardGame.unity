@@ -4334,7 +4334,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b00043d58ae85884b9210f237eda16ee, type: 2}
   - {fileID: 11400000, guid: 9d454157f13d5f94f80f62436f91828d, type: 2}
   - {fileID: 11400000, guid: 400b0bfda1cae784b8510cace8a8183d, type: 2}
-  - {fileID: 11400000, guid: 9d06d9d23e3218846b2e03563f43d98b, type: 2}
   - {fileID: 11400000, guid: cf8a7bedcf4154f4a8578e3a1f195840, type: 2}
   - {fileID: 11400000, guid: 1df8d83c38d7c464ab1f425077107806, type: 2}
   - {fileID: 11400000, guid: 7e8b345ba62478645a5cd05d31ac447c, type: 2}
@@ -4365,6 +4364,10 @@ MonoBehaviour:
   sabotageCountText: {fileID: 1973101999}
   startingCoins: 50
   currentRerollCost: 1
+  sfxSource: {fileID: 0}
+  buyCardSfx: {fileID: 0}
+  rerollSfx: {fileID: 0}
+  viewAllSfx: {fileID: 0}
   currentShopCards: []
   playerDeck: []
 --- !u!4 &1963542321

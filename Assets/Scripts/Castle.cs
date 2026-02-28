@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Castle : MonoBehaviour
 {
@@ -59,7 +60,8 @@ public class Castle : MonoBehaviour
     }
 
     private void WinGame()
-    {
-        Debug.Log("[Castle] OYUN KAZANILDI! Kale yok edildi.");
-    }
+{
+    Debug.Log("[Castle] Kale yok edildi, WinScene yükleniyor...");
+    SceneManager.LoadScene("WinScene"); // Sahne adının Build Settings'teki ile aynı olduğundan emin ol
+}
 }
