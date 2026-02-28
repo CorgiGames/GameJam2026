@@ -12222,6 +12222,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7221583879205414322, guid: 8da51812e91c47f45aafa26cec646ea3, type: 3}
   m_PrefabInstance: {fileID: 1039209500}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1145196931 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1734856867899942701, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+  m_PrefabInstance: {fileID: 9056329304342209971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &1145196935 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 6065416279575139193, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+  m_PrefabInstance: {fileID: 9056329304342209971}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1145495088 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7221583879205414322, guid: 8da51812e91c47f45aafa26cec646ea3, type: 3}
@@ -15090,7 +15100,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1145196931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1423847267
@@ -21812,8 +21823,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5459578618067264535}
   m_SourcePrefab: {fileID: 100100000, guid: 36cc8c8cd6372814fac1e06c5b7d5972, type: 3}
-<<<<<<< HEAD
-=======
 --- !u!1 &5459578618067264534 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2798940496604493651, guid: 36cc8c8cd6372814fac1e06c5b7d5972, type: 3}
@@ -22027,7 +22036,7 @@ PrefabInstance:
     - target: {fileID: 8391488026543194639, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: rb
       value: 
-      objectReference: {fileID: 741552460}
+      objectReference: {fileID: 1145196935}
     - target: {fileID: 8391488026543194639, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: moveSpeed
       value: 2.5
@@ -22037,7 +22046,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
->>>>>>> b7ae15a6e6d5ac93973c1993a163ceac667d9e4a
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
