@@ -18,7 +18,6 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Yalnızca sağ tık (Right-Click) algılandığında çalışır
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (cardData != null && draftManager != null)
