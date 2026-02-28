@@ -23,7 +23,6 @@ public class CharacterMovement : MonoBehaviour
 
             if (pathIndex == LevelManager.main.path.Length)
             {
-                CharacterSpawner.onCharacterDestroy.Invoke();
                 Destroy(gameObject);
                 return;
             }
