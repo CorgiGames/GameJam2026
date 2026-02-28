@@ -2771,8 +2771,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1887024927
-  m_SortingLayer: 1
+  m_SortingLayerID: -1357956045
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7540726292751986151, guid: 1341c2d3921ac6e469b2085d82419159, type: 3}
@@ -3294,8 +3294,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1887024927
-  m_SortingLayer: 1
+  m_SortingLayerID: -1357956045
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7540726292751986151, guid: 1341c2d3921ac6e469b2085d82419159, type: 3}
@@ -3726,7 +3726,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7034163435506717671, guid: 8c279d33f37567149b1c8b8cd0707e41, type: 3}
   firingPoint: {fileID: 584242236}
   targetingRange: 3
-  rotationSpeed: 5
+  rotationSpeed: 0
   bps: 1
 --- !u!4 &307518278
 Transform:
@@ -3785,7 +3785,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7034163435506717671, guid: 8c279d33f37567149b1c8b8cd0707e41, type: 3}
   firingPoint: {fileID: 1421952042}
   targetingRange: 3
-  rotationSpeed: 5
+  rotationSpeed: 0
   bps: 1
 --- !u!4 &317465952
 Transform:
@@ -4044,8 +4044,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1887024927
-  m_SortingLayer: 1
+  m_SortingLayerID: -1357956045
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7540726292751986151, guid: 1341c2d3921ac6e469b2085d82419159, type: 3}
@@ -6969,7 +6969,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000001fb779707b07b245
+  m_ApplyToSortingLayers: 000000001fb779707b07b245333c0faf
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7598,7 +7598,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7034163435506717671, guid: 8c279d33f37567149b1c8b8cd0707e41, type: 3}
   firingPoint: {fileID: 1332139042}
   targetingRange: 3
-  rotationSpeed: 5
+  rotationSpeed: 0
   bps: 1
 --- !u!4 &670326076
 Transform:
@@ -8108,8 +8108,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1887024927
-  m_SortingLayer: 1
+  m_SortingLayerID: -1357956045
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7540726292751986151, guid: 1341c2d3921ac6e469b2085d82419159, type: 3}
@@ -10087,8 +10087,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1887024927
-  m_SortingLayer: 1
+  m_SortingLayerID: -1357956045
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7540726292751986151, guid: 1341c2d3921ac6e469b2085d82419159, type: 3}
@@ -12586,7 +12586,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7034163435506717671, guid: 8c279d33f37567149b1c8b8cd0707e41, type: 3}
   firingPoint: {fileID: 487533958}
   targetingRange: 3
-  rotationSpeed: 5
+  rotationSpeed: 0
   bps: 1
 --- !u!4 &1249795452
 Transform:
@@ -21358,6 +21358,10 @@ PrefabInstance:
     - target: {fileID: 2798940496604493651, guid: 36cc8c8cd6372814fac1e06c5b7d5972, type: 3}
       propertyPath: m_Name
       value: Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 3081484763718083188, guid: 36cc8c8cd6372814fac1e06c5b7d5972, type: 3}
+      propertyPath: rotationSpeed
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3941634540864299636, guid: 36cc8c8cd6372814fac1e06c5b7d5972, type: 3}
       propertyPath: m_LocalPosition.x

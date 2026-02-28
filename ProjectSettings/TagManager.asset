@@ -47,5 +47,8 @@ TagManager:
   - name: Character
     uniqueID: 1169295227
     locked: 0
+  - name: Tower
+    uniqueID: 2937011251
+    locked: 0
   m_RenderingLayers:
   - Default
