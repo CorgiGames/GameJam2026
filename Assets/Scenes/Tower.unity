@@ -16709,9 +16709,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerCombatManager
   playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}
   handPanel: {fileID: 1346340940}
-  cardPrefab: {fileID: 4949092312007608340, guid: c934e21f7bc06a246996061e751eeb56, type: 3}
+  cardPrefab: {fileID: 4949092312007608340, guid: 819bc7f3d10e75d4eb8351a858d49393, type: 3}
   maxHandSize: 4
-  cardPlayCooldown: 3
+  cardPlayCooldown: 1
 --- !u!4 &1619124088
 Transform:
   m_ObjectHideFlags: 0

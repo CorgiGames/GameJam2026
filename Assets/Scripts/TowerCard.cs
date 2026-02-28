@@ -1,16 +1,38 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TowerCard : MonoBehaviour, IPointerClickHandler
 {
     private CardData cardData;
     private TowerCombatManager combatManager;
 
+    [Header("UI References")]
+    public Image cooldownOverlay;
+
     // Initializes the card with its data and manager reference
     public void SetupCard(CardData data, TowerCombatManager manager)
     {
         cardData = data;
         combatManager = manager;
+    }
+
+    void Update()
+    {
+        if (combatManager != null && cooldownOverlay != null)
+        {
+            float remainingTime = combatManager.GetRemainingCooldown();
+            
+            if (remainingTime > 0)
+            {
+                // Calculates the fill fraction (0 to 1)
+                cooldownOverlay.fillAmount = remainingTime / combatManager.cardPlayCooldown;
+            }
+            else
+            {
+                cooldownOverlay.fillAmount = 0f;
+            }
+        }
     }
 
     // Detects clicks on the UI element

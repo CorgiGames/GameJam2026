@@ -15,7 +15,7 @@ public class TowerCombatManager : MonoBehaviour
     public int maxHandSize = 4;
 
     [Header("Gameplay Mechanics")]
-    public float cardPlayCooldown = 3f;
+    public float cardPlayCooldown = 2f;
     private float lastCardPlayTime = -100f;
 
     // Temporary copy of the deck for single-use card logic
@@ -98,4 +98,10 @@ public class TowerCombatManager : MonoBehaviour
         Destroy(cardObject);
         DrawCard();
     }
+    public float GetRemainingCooldown()
+{
+    float timeSinceLastPlay = Time.time - lastCardPlayTime;
+    float remaining = cardPlayCooldown - timeSinceLastPlay;
+    return Mathf.Max(0, remaining);
+}
 }
