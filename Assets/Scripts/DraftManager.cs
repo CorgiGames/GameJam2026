@@ -13,6 +13,23 @@ public class DraftManager : MonoBehaviour
     public TextMeshProUGUI coinText;
     public Button rerollButton;
     public TextMeshProUGUI rerollButtonText;
+    
+    [Header("Deck UI - Bottom Panel")]
+    public Transform deckPanel;
+    public GameObject deckCardPrefab;
+    public int maxVisibleCards = 6; 
+    private int currentVisibleCards = 0;
+    public Button viewAllButton;
+
+    [Header("Deck UI - Full Modal")]
+    public GameObject fullDeckModal;
+    public Transform fullDeckContent;
+    public Button closeModalButton;
+
+    [Header("Deck Stats UI")]
+    public TextMeshProUGUI unitCountText;
+    public TextMeshProUGUI buffCountText;
+    public TextMeshProUGUI debuffCountText;
 
     [Header("Economy")]
     public int startingCoins = 100;
@@ -20,16 +37,19 @@ public class DraftManager : MonoBehaviour
     private int currentCoins;
 
     public List<CardData> currentShopCards = new List<CardData>();
-    
-    // List to store purchased cards
     public List<CardData> playerDeck = new List<CardData>(); 
 
     void Start()
     {
         currentCoins = startingCoins;
+        currentVisibleCards = 0;
+
+        // Ensure modal is closed and View All button is hidden at the start
+        if (fullDeckModal != null) fullDeckModal.SetActive(false);
+        if (viewAllButton != null) viewAllButton.gameObject.SetActive(false);
+
         UpdateUI();
-        
-        // Initialize first set of cards without charging coins
+        UpdateDeckStatsUI(); 
         RollCards(); 
     }
 
@@ -52,46 +72,123 @@ public class DraftManager : MonoBehaviour
         }
     }
 
-    // Function triggered when a card slot is clicked
     public void BuyCard(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= currentShopCards.Count) return;
 
         CardData cardToBuy = currentShopCards[slotIndex];
-
-        // Check if the slot is already empty (purchased)
         if (cardToBuy == null) return;
 
         if (currentCoins >= cardToBuy.cost)
         {
             currentCoins -= cardToBuy.cost;
-            playerDeck.Add(cardToBuy);
+
+            if (cardToBuy.cardType == CardType.Special)
+            {
+                Debug.Log("Special card purchased: " + cardToBuy.cardName + ". Instant effect triggered. Not added to deck.");
+            }
+            else
+            {
+                playerDeck.Add(cardToBuy);
+                
+                // Add to bottom panel only if the limit is not reached
+                if (currentVisibleCards < maxVisibleCards)
+                {
+                    GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
+                    Image cardImage = newDeckCard.GetComponent<Image>();
+                    
+                    if (cardImage != null)
+                    {
+                        cardImage.sprite = cardToBuy.cardIcon;
+                    }
+
+                    currentVisibleCards++;
+
+                    // Activate the View All button when the first card is added, keep it at the end
+                    if (viewAllButton != null)
+                    {
+                        viewAllButton.gameObject.SetActive(true);
+                        viewAllButton.transform.SetAsLastSibling();
+                    }
+                }
+                else
+                {
+                    Debug.Log("Card purchased but bottom panel is full. Available in View All modal.");
+                }
+
+                UpdateDeckStatsUI(); 
+            }
             
-            // Mark slot as empty in the backend list
-            currentShopCards[slotIndex] = null;
-
-            // Update specific slot UI to appear empty
-            cardSlots[slotIndex].sprite = null;
-            cardSlots[slotIndex].color = new Color(1, 1, 1, 0); // Make transparent
-
-            // Disable button interaction for this slot
-            Button slotButton = cardSlots[slotIndex].GetComponent<Button>();
-            if (slotButton != null) slotButton.interactable = false;
-
             UpdateUI();
-            Debug.Log("Card purchased: " + cardToBuy.cardName);
+            RollCards();
         }
         else
         {
-            Debug.LogWarning("Not enough coins to buy this card.");
+            Debug.LogWarning("Insufficient coins.");
         }
+    }
+
+    // Opens the full deck modal and populates it with all purchased non-special cards
+    public void OpenFullDeckModal()
+    {
+        if (fullDeckModal == null || fullDeckContent == null) return;
+
+        fullDeckModal.SetActive(true);
+
+        // Clear existing items in the modal to prevent duplicates
+        foreach (Transform child in fullDeckContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Instantiate all cards currently in the player's deck
+        foreach (CardData card in playerDeck)
+        {
+            GameObject newCard = Instantiate(deckCardPrefab, fullDeckContent);
+            Image cardImage = newCard.GetComponent<Image>();
+            
+            if (cardImage != null)
+            {
+                cardImage.sprite = card.cardIcon;
+            }
+        }
+
+        Debug.Log("Full deck modal opened.");
+    }
+
+    // Closes the full deck modal
+    public void CloseFullDeckModal()
+    {
+        if (fullDeckModal != null)
+        {
+            fullDeckModal.SetActive(false);
+            Debug.Log("Full deck modal closed.");
+        }
+    }
+
+    private void UpdateDeckStatsUI()
+    {
+        int unitCount = 0;
+        int buffCount = 0;
+        int debuffCount = 0;
+
+        foreach (CardData card in playerDeck)
+        {
+            if (card.cardType == CardType.Unit) unitCount++;
+            else if (card.cardType == CardType.Buff) buffCount++;
+            else if (card.cardType == CardType.Debuff) debuffCount++;
+        }
+
+        if (unitCountText != null) unitCountText.text = "Unit: " + unitCount;
+        if (buffCountText != null) buffCountText.text = "Buff: " + buffCount;
+        if (debuffCountText != null) debuffCountText.text = "Debuff: " + debuffCount;
     }
 
     public void RollCards()
     {
         if (allCards.Count == 0)
         {
-            Debug.LogError("All Cards list is empty. Please assign CardData objects in the Inspector.");
+            Debug.LogError("All Cards list is empty. Please assign CardData objects.");
             return;
         }
 
@@ -102,16 +199,46 @@ public class DraftManager : MonoBehaviour
             CardData selectedCard = GetRandomCardWithWeights();
             currentShopCards.Add(selectedCard);
             
-            // Assign new sprite and reset alpha color to fully visible
             cardSlots[i].sprite = selectedCard.cardIcon;
-            cardSlots[i].color = new Color(1, 1, 1, 1); 
-
-            // Re-enable button interaction for the new card
-            Button slotButton = cardSlots[i].GetComponent<Button>();
-            if (slotButton != null) slotButton.interactable = true;
         }
 
-        Debug.Log("Cards have been successfully rolled. Next reroll cost: " + currentRerollCost);
+        UpdateUI();
+        CheckDraftState();
+    }
+
+    private void CheckDraftState()
+    {
+        bool canAffordAnyCard = false;
+
+        for (int i = 0; i < cardSlots.Length; i++)
+        {
+            if (currentShopCards[i] != null)
+            {
+                Button slotButton = cardSlots[i].GetComponent<Button>();
+
+                if (currentCoins >= currentShopCards[i].cost)
+                {
+                    cardSlots[i].color = new Color(1, 1, 1, 1); 
+                    if (slotButton != null) slotButton.interactable = true;
+                    canAffordAnyCard = true;
+                }
+                else
+                {
+                    cardSlots[i].color = new Color(0.6f, 0.6f, 0.6f, 1f); 
+                    if (slotButton != null) slotButton.interactable = false;
+                }
+            }
+        }
+
+        if (!canAffordAnyCard && currentCoins < currentRerollCost)
+        {
+            EndDraftPhase();
+        }
+    }
+
+    private void EndDraftPhase()
+    {
+        Debug.Log("Draft Phase Complete. Player has no valid moves left.");
     }
 
     private CardData GetRandomCardWithWeights()
@@ -119,22 +246,10 @@ public class DraftManager : MonoBehaviour
         int roll = Random.Range(0, 100);
         CardType selectedType;
 
-        if (roll < 40) 
-        {
-            selectedType = CardType.Unit;
-        }
-        else if (roll < 65) 
-        {
-            selectedType = CardType.Buff;
-        }
-        else if (roll < 90) 
-        {
-            selectedType = CardType.Debuff;
-        }
-        else 
-        {
-            selectedType = CardType.Special;
-        }
+        if (roll < 40) selectedType = CardType.Unit;
+        else if (roll < 65) selectedType = CardType.Buff;
+        else if (roll < 90) selectedType = CardType.Debuff;
+        else selectedType = CardType.Special;
 
         List<CardData> filteredCards = new List<CardData>();
         foreach (CardData card in allCards)
@@ -145,10 +260,8 @@ public class DraftManager : MonoBehaviour
             }
         }
 
-        // Fallback mechanism if no card of the selected type exists in the pool
         if (filteredCards.Count == 0)
         {
-            Debug.LogWarning("No cards found for type: " + selectedType + ". Returning a random card from the general pool.");
             return allCards[Random.Range(0, allCards.Count)];
         }
 
