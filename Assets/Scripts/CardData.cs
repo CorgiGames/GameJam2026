@@ -17,4 +17,7 @@ public class CardData : ScriptableObject
     public CardType cardType;
     public int cost;
     public Sprite cardIcon;
+
+    [Header("Unit Specific")]
+    public GameObject characterPrefab;
 }
