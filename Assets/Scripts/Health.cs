@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -5,6 +6,11 @@ public class Health : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] private int maxHitPoints = 2;
     private int currentHitPoints;
+
+    [Header("Decoy Settings")]
+    [SerializeField] private bool isDecoy = false;
+    [SerializeField] private int decayDamage = 1;
+    [SerializeField] private float decayInterval = 1f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource sfxSource;
@@ -42,27 +48,54 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        if (hpBarPrefab == null) return;
-
-        hpBarInstance = Instantiate(hpBarPrefab, transform.position + hpBarOffset, Quaternion.identity);
-
-        HealthBar hb = hpBarInstance.GetComponent<HealthBar>();
-        if (hb != null)
+        if (hpBarPrefab != null)
         {
-            hb.health = this;
-            hb.offset = hpBarOffset;
+            hpBarInstance = Instantiate(hpBarPrefab, transform.position + hpBarOffset, Quaternion.identity);
+
+            HealthBar hb = hpBarInstance.GetComponent<HealthBar>();
+            if (hb != null)
+            {
+                hb.health = this;
+                hb.offset = hpBarOffset;
+            }
+        }
+
+        if (isDecoy)
+        {
+            StartCoroutine(DecoyDecayRoutine());
+        }
+    }
+
+    private IEnumerator DecoyDecayRoutine()
+    {
+        while (!isDead)
+        {
+            yield return new WaitForSeconds(decayInterval);
+            TakeDecayDamage(decayDamage);
+        }
+    }
+
+    private void TakeDecayDamage(int dmg)
+    {
+        if (isDead) return;
+
+        currentHitPoints -= dmg;
+
+        if (currentHitPoints <= 0)
+        {
+            Die();
         }
     }
 
     public void Heal(int amount)
-{
-    if (isDead) return;
+    {
+        if (isDead) return;
 
-    currentHitPoints += amount;
+        currentHitPoints += amount;
 
-    if (currentHitPoints > maxHitPoints)
-        currentHitPoints = maxHitPoints;
-}
+        if (currentHitPoints > maxHitPoints)
+            currentHitPoints = maxHitPoints;
+    }
 
     public void TakeDamage(int dmg)
     {
@@ -76,20 +109,25 @@ public class Health : MonoBehaviour
 
         if (currentHitPoints <= 0)
         {
-            isDead = true;
-
-            if (sfxSource != null && deathSfx != null)
-                sfxSource.PlayOneShot(deathSfx);
-
-            if (hpBarInstance != null)
-                Destroy(hpBarInstance, destroyDelay);
-
-            // Notify the spawner that this unit is dead
-            CharacterSpawner.onCharacterDestroy?.Invoke();
-
-            Destroy(gameObject, destroyDelay);
+            Die();
         }
     }
+
+    private void Die()
+    {
+        isDead = true;
+
+        if (sfxSource != null && deathSfx != null)
+            sfxSource.PlayOneShot(deathSfx);
+
+        if (hpBarInstance != null)
+            Destroy(hpBarInstance, destroyDelay);
+
+        CharacterSpawner.onCharacterDestroy?.Invoke();
+
+        Destroy(gameObject, destroyDelay);
+    }
+
     public void SetInvincible(bool status)
     {
         isInvincible = status;

@@ -93,6 +93,10 @@ PrefabInstance:
       value: 1169295227
       objectReference: {fileID: 0}
     - target: {fileID: 7526234319486247584, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+      propertyPath: isDecoy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526234319486247584, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: hitPoints
       value: 20
       objectReference: {fileID: 0}
