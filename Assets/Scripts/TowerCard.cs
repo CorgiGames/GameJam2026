@@ -37,14 +37,11 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
 
     private System.Collections.IEnumerator ApplyTemporaryRangeBuff(float buffedRange, float normalRange, float duration)
     {
-        // 1. Set the range to the reduced value
         Turret.OnRangeBuffReceived?.Invoke(buffedRange);
         Debug.Log("Range Reduced!");
 
-        // 2. Wait for the duration (e.g., 5 seconds)
         yield return new WaitForSeconds(duration);
 
-        // 3. Set it back to normal
         Turret.OnRangeBuffReceived?.Invoke(normalRange);
         Debug.Log("Range Restored to normal.");
     }
@@ -55,8 +52,6 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
         {
             if (combatManager != null && cardData != null)
             {
-                // BUG FIX: Check cooldown before starting the process.
-                // If the card cannot be played, cut the method completely here.
                 if (!combatManager.CanPlayCard()) return;
 
                 if (cardData.cardType == CardType.Unit)
@@ -75,8 +70,8 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
                 {
                     if (cardData.characterPrefab != null)
                     {
-                        CharacterSpawner.main.SpawnDecoyOnRandomPathPoint(cardData.characterPrefab);
-                        combatManager.PlayCard(this.gameObject, cardData);
+                        // Kartı anında silmek yerine yerleştirme modunu başlatıyoruz.
+                        CharacterSpawner.main.StartPlacingDecoy(cardData.characterPrefab, this.gameObject, cardData, combatManager);
                     }
                     else
                     {

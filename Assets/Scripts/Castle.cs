@@ -12,6 +12,12 @@ public class Castle : MonoBehaviour
     public int maxHealth = 100;
     private int currentHealth;
 
+    [Header("Visuals")]
+    public SpriteRenderer castleSpriteRenderer;
+    public Sprite damagedSprite;
+    [Range(0f, 1f)] public float damageThreshold = 0.5f; // %50 canın altına düşünce tetikler
+    private bool isDamagedVisualActive = false;
+
     [Header("Scene Management")]
     public string round2DraftSceneName = "Draft2"; 
     public string winSceneName = "WinScene";
@@ -34,12 +40,32 @@ public class Castle : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         
+        CheckVisualState();
         UpdateUI();
+        
         Debug.Log($"[Castle] Health after damage: {currentHealth}");
 
         if (currentHealth <= 0)
         {
             WinGame();
+        }
+    }
+
+    private void CheckVisualState()
+    {
+        // Can belirlenen eşiğin altına düştüyse ve görsel henüz değişmediyse işlemi yap
+        if (!isDamagedVisualActive && currentHealth <= (maxHealth * damageThreshold))
+        {
+            if (castleSpriteRenderer != null && damagedSprite != null)
+            {
+                castleSpriteRenderer.sprite = damagedSprite;
+                isDamagedVisualActive = true;
+                Debug.Log("[Castle] Visual changed to damaged state.");
+            }
+            else
+            {
+                Debug.LogWarning("[Castle] WARNING: castleSpriteRenderer or damagedSprite is unassigned!");
+            }
         }
     }
 

@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7172849383110775225, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7172849383110775225, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: m_SortingLayerID
@@ -102,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526234319486247584, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: maxHitPoints
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8391488026543194639, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: rb
@@ -112,7 +112,8 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8391488026543194639, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

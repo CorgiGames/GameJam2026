@@ -12,15 +12,17 @@ public class DoubleDice : MonoBehaviour
     [Header("Dice Configuration")]
     public Sprite[] diceFaces; 
     public float rollDuration = 0.5f;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip rollSound;
     
     private bool isRolling = false;
-
 
     public void RollBothDice(Action<int> onRollComplete)
     {
         if (!isRolling) 
         {
-           
             gameObject.SetActive(true); 
             StartCoroutine(RollRoutine(onRollComplete));
         }
@@ -29,6 +31,12 @@ public class DoubleDice : MonoBehaviour
     private IEnumerator RollRoutine(Action<int> onRollComplete)
     {
         isRolling = true;
+
+        if (audioSource != null && rollSound != null)
+        {
+            audioSource.PlayOneShot(rollSound);
+        }
+
         float elapsed = 0;
 
         while (elapsed < rollDuration)
@@ -47,14 +55,12 @@ public class DoubleDice : MonoBehaviour
         diceImage2.sprite = diceFaces[finalResult2];
         
         int totalSum = (finalResult1 + 1) + (finalResult2 + 1);
-
         
         yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
 
         isRolling = false;
         
-       
         onRollComplete?.Invoke(totalSum); 
     }
 }

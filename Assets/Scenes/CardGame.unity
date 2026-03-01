@@ -5320,6 +5320,14 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0.9019608
       objectReference: {fileID: 0}
+    - target: {fileID: 3717669408847583624, guid: 0f9482b8b5d25c0448ed61b0992cd028, type: 3}
+      propertyPath: rollSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e5886bbc91595e240ad4884809d288fc, type: 3}
+    - target: {fileID: 3717669408847583624, guid: 0f9482b8b5d25c0448ed61b0992cd028, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1963542322}
     - target: {fileID: 4763468923156513665, guid: 0f9482b8b5d25c0448ed61b0992cd028, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

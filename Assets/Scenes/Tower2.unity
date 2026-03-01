@@ -1679,7 +1679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Castle
   playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
-  maxHealth: 100
+  maxHealth: 150
   round2DraftSceneName: Draft2
   winSceneName: WinScene
   healthText: {fileID: 0}

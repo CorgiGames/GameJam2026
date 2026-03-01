@@ -1431,7 +1431,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Castle
   playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
-  maxHealth: 75
+  maxHealth: 60
+  castleSpriteRenderer: {fileID: 68313966}
+  damagedSprite: {fileID: 4661571586052586473, guid: d233c0a92a2828d45bdf870964fa8520, type: 3}
+  damageThreshold: 0.5
   round2DraftSceneName: Draft2
   winSceneName: WinScene
   healthText: {fileID: 0}
