@@ -34,6 +34,7 @@ public class TowerCombatManager : MonoBehaviour
     void Start()
     {
         InitializeDeck();
+        ApplyRoundModifiers();
         DrawInitialHand();
     }
 
@@ -42,6 +43,16 @@ public class TowerCombatManager : MonoBehaviour
         if (!isGameOver)
         {
             CheckGameOverCondition();
+        }
+    }
+
+    // NEW: Checks the current round and applies modifiers (like reduced cooldown)
+    private void ApplyRoundModifiers()
+    {
+        if (playerDeckData != null && playerDeckData.currentRound >= 2)
+        {
+            cardPlayCooldown *= 0.5f;
+            Debug.Log($"[TowerCombat] Round {playerDeckData.currentRound} active. Card cooldown reduced by 50%. New cooldown: {cardPlayCooldown}s.");
         }
     }
 
@@ -59,49 +70,49 @@ public class TowerCombatManager : MonoBehaviour
 
     [SerializeField] private float rangeDebuffDuration = 5f;
 
-private void ReduceTurretRangeTemporarily()
-{
-    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
-
-    if (turrets.Length == 0)
+    private void ReduceTurretRangeTemporarily()
     {
-        Debug.LogWarning("No turrets found.");
-        return;
-    }
+        Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
 
-    StartCoroutine(RangeDebuffCoroutine(turrets));
-}
-
-private System.Collections.IEnumerator RangeDebuffCoroutine(Turret[] turrets)
-{
-    Dictionary<Turret, float> originalRanges = new Dictionary<Turret, float>();
-
-    // Orijinal deðerleri kaydet ve yarýya indir
-    foreach (Turret turret in turrets)
-    {
-        if (turret != null)
+        if (turrets.Length == 0)
         {
-            float original = turret.GetRange();
-            originalRanges[turret] = original;
-            turret.SetRange(original * 0.5f);
+            Debug.LogWarning("No turrets found.");
+            return;
         }
+
+        StartCoroutine(RangeDebuffCoroutine(turrets));
     }
 
-    Debug.Log("Turret range reduced by 50%.");
-
-    yield return new WaitForSeconds(rangeDebuffDuration);
-
-    // Süre bitince eski haline döndür
-    foreach (var pair in originalRanges)
+    private System.Collections.IEnumerator RangeDebuffCoroutine(Turret[] turrets)
     {
-        if (pair.Key != null)
-        {
-            pair.Key.SetRange(pair.Value);
-        }
-    }
+        Dictionary<Turret, float> originalRanges = new Dictionary<Turret, float>();
 
-    Debug.Log("Turret range restored.");
-}
+        // Save original values and halve them
+        foreach (Turret turret in turrets)
+        {
+            if (turret != null)
+            {
+                float original = turret.GetRange();
+                originalRanges[turret] = original;
+                turret.SetRange(original * 0.5f);
+            }
+        }
+
+        Debug.Log("Turret range reduced by 50%.");
+
+        yield return new WaitForSeconds(rangeDebuffDuration);
+
+        // Restore to original values after duration
+        foreach (var pair in originalRanges)
+        {
+            if (pair.Key != null)
+            {
+                pair.Key.SetRange(pair.Value);
+            }
+        }
+
+        Debug.Log("Turret range restored.");
+    }
 
     private void TriggerGameOver()
     {
@@ -248,9 +259,9 @@ private System.Collections.IEnumerator RangeDebuffCoroutine(Turret[] turrets)
         }
 
         if (cardData.cardName == "RateOfFire")   
-            {
-              ReduceTurretFireRateTemporarily();
-            }
+        {
+            ReduceTurretFireRateTemporarily();
+        }
 
         if (cardData.cardName == "Speed")  
         {
@@ -270,48 +281,45 @@ private System.Collections.IEnumerator RangeDebuffCoroutine(Turret[] turrets)
 
     [SerializeField] private float rofDebuffDuration = 5f;
 
-private void ReduceTurretFireRateTemporarily()
-{
-    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
-
-    if (turrets.Length == 0)
+    private void ReduceTurretFireRateTemporarily()
     {
-        Debug.LogWarning("No turrets found.");
-        return;
+        Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
+
+        if (turrets.Length == 0)
+        {
+            Debug.LogWarning("No turrets found.");
+            return;
+        }
+
+        StartCoroutine(RofDebuffCoroutine(turrets));
     }
 
-    StartCoroutine(RofDebuffCoroutine(turrets));
-}
-
-private System.Collections.IEnumerator RofDebuffCoroutine(Turret[] turrets)
-{
-    
-    Dictionary<Turret, float> originalBps = new Dictionary<Turret, float>();
-
-    foreach (Turret t in turrets)
+    private System.Collections.IEnumerator RofDebuffCoroutine(Turret[] turrets)
     {
-        if (t == null) continue;
+        Dictionary<Turret, float> originalBps = new Dictionary<Turret, float>();
 
-        float bps0 = t.GetBps();
-        originalBps[t] = bps0;
+        foreach (Turret t in turrets)
+        {
+            if (t == null) continue;
 
-        
-        t.SetBps(bps0 * 0.5f);
+            float bps0 = t.GetBps();
+            originalBps[t] = bps0;
+
+            t.SetBps(bps0 * 0.5f);
+        }
+
+        Debug.Log("ROF debuff applied: turret bps reduced by 50% for 5s.");
+
+        yield return new WaitForSeconds(rofDebuffDuration);
+
+        foreach (var pair in originalBps)
+        {
+            if (pair.Key != null)
+                pair.Key.SetBps(pair.Value);
+        }
+
+        Debug.Log("ROF debuff ended: turret bps restored.");
     }
-
-    Debug.Log("ROF debuff applied: turret bps reduced by 50% for 5s.");
-
-    yield return new WaitForSeconds(rofDebuffDuration);
-
-    
-    foreach (var pair in originalBps)
-    {
-        if (pair.Key != null)
-            pair.Key.SetBps(pair.Value);
-    }
-
-    Debug.Log("ROF debuff ended: turret bps restored.");
-}
 
     public float GetRemainingCooldown()
     {
