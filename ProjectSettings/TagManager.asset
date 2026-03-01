@@ -43,6 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tile
+    uniqueID: 1660571635
+    locked: 0
   - name: Turret
     uniqueID: 1887024927
     locked: 0
