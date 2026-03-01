@@ -4765,6 +4765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78381ceae0486da42b4f3c2eec28d0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DraftManager
+  doubleDice: {fileID: 1162328634}
   randomCardPopup: {fileID: 1331694505}
   popupImage: {fileID: 1795476791}
   cardBackSprite: {fileID: 2262460905039532110, guid: 1dc6af3d04a45494faa6312a08acf20e, type: 3}
@@ -4781,7 +4782,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1df8d83c38d7c464ab1f425077107806, type: 2}
   - {fileID: 11400000, guid: 7e8b345ba62478645a5cd05d31ac447c, type: 2}
   - {fileID: 11400000, guid: 5f605c1b4349a4e4d98babfd16f02be7, type: 2}
-  - {fileID: 11400000, guid: 8a985216ca7fab4469dd76f7cc608c4b, type: 2}
   - {fileID: 11400000, guid: cce9e860857ffc241a9a5e6050e46767, type: 2}
   - {fileID: 11400000, guid: bcca5e53f4717494da2424fed6f5a357, type: 2}
   playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}

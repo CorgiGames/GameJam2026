@@ -12,9 +12,9 @@ public enum CardType
 public enum SpecialEffect
 {
     None,
-    RandomCard
+    RandomCard,
+    LuckyCoin
 }
-
 
 // ScriptableObject to hold card data
 [CreateAssetMenu(fileName = "New Card", menuName = "Draft System/Card Data")]
