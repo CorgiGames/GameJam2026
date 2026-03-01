@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1588680205051590967}
   - component: {fileID: 2860729870374626293}
   - component: {fileID: 8351398912651881868}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: healer_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,5 +361,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea7c6ec01d3eae489c3f93918bd6682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealerAbility
-  healInterval: 2
+  healInterval: 5
   healAmount: 2
