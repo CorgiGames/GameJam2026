@@ -21,6 +21,10 @@ public class Health : MonoBehaviour
     private GameObject hpBarInstance;
 
     private bool isDead = false;
+    private bool isInvincible = false;
+
+    private SpriteRenderer sr;
+    private Color originalColor;
 
     public int CurrentHP => currentHitPoints;
     public int MaxHP => maxHitPoints;
@@ -29,6 +33,9 @@ public class Health : MonoBehaviour
     {
         if (sfxSource == null)
             sfxSource = GetComponent<AudioSource>();
+
+        sr = GetComponent<SpriteRenderer>();
+        if (sr != null) originalColor = sr.color;
 
         currentHitPoints = maxHitPoints;
     }
@@ -47,9 +54,20 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+{
+    if (isDead) return;
+
+    currentHitPoints += amount;
+
+    if (currentHitPoints > maxHitPoints)
+        currentHitPoints = maxHitPoints;
+}
+
     public void TakeDamage(int dmg)
     {
         if (isDead) return;
+        if (isInvincible) return;
 
         currentHitPoints -= dmg;
 
@@ -70,6 +88,20 @@ public class Health : MonoBehaviour
             CharacterSpawner.onCharacterDestroy?.Invoke();
 
             Destroy(gameObject, destroyDelay);
+        }
+    }
+    public void SetInvincible(bool status)
+    {
+        isInvincible = status;
+        if (sr == null) return;
+
+        if (isInvincible)
+        {
+            sr.color = new Color(0.0f, 1.0f, 1.0f, 1.0f); 
+        }
+        else
+        { 
+            sr.color = originalColor;
         }
     }
 

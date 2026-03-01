@@ -57,7 +57,36 @@ public class CharacterSpawner : MonoBehaviour
             Debug.LogError("CharacterSpawner: The path array in LevelManager is empty or null!");
         }
     }
+    public void ActivateInvincibility(float duration)
+    {
+        StartCoroutine(InvincibilityRoutine(duration));
+    }
 
+    private IEnumerator InvincibilityRoutine(float duration)
+    {
+        // 1. Find all active characters (adjust 'Health' to your actual script name)
+        Health[] allUnits = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
+
+        // 2. Turn on Shields
+        foreach (Health h in allUnits)
+        {
+            h.SetInvincible(true);
+        }
+
+        Debug.Log("Shields Active!");
+
+        // 3. Wait for 5 seconds
+        yield return new WaitForSeconds(duration);
+
+        // 4. Turn off Shields
+        Health[] remainingUnits = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
+        foreach (Health h in remainingUnits)
+        {
+            h.SetInvincible(false);
+        }
+
+        Debug.Log("Shields Expired!");
+    }
     public void SpawnCharacter(GameObject characterPrefab)
     {
         if (characterPrefab == null)

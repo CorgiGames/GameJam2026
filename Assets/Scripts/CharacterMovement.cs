@@ -12,6 +12,11 @@ public class CharacterMovement : MonoBehaviour
     private Transform target;
     private int pathIndex = 0;
 
+    public int GetPathIndex()
+{
+    return pathIndex;
+}
+
     private void Start()
     {
         if (LevelManager.main != null && LevelManager.main.path.Length > 0)
