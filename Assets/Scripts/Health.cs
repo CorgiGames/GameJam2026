@@ -48,6 +48,16 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+{
+    if (isDead) return;
+
+    currentHitPoints += amount;
+
+    if (currentHitPoints > maxHitPoints)
+        currentHitPoints = maxHitPoints;
+}
+
     public void TakeDamage(int dmg)
     {
         if (isDead) return;
