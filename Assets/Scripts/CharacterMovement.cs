@@ -30,6 +30,7 @@ public class CharacterMovement : MonoBehaviour
 
             if (pathIndex == LevelManager.main.path.Length)
             {
+                CharacterSpawner.onCharacterDestroy?.Invoke();
                 Destroy(gameObject);
                 return;
             }
@@ -49,39 +50,23 @@ public class CharacterMovement : MonoBehaviour
     }
 
     public void AddMoveSpeed(float amount)
-{
-    moveSpeed += amount;
-}
-
-private void OnTriggerEnter2D(Collider2D collision)
-{
-    
-    Debug.Log($"[Movement] Çarpışma gerçekleşti! Obje: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
-
-   
-    if (collision.CompareTag("Castle"))
     {
-        Debug.Log("[Movement] 'Castle' tag'i doğrulandı.");
+        moveSpeed += amount;
+    }
 
-        
-        Castle castle = collision.GetComponent<Castle>();
-        
-        if (castle != null)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Castle"))
         {
-            Debug.Log("[Movement] Castle scripti bulundu, hasar gönderiliyor...");
-            castle.TakeDamage(attackDamage);
+            Castle castle = collision.GetComponent<Castle>();
             
-            CharacterSpawner.onCharacterDestroy.Invoke();
-            Destroy(gameObject);
-        }
-        else
-        {
-            Debug.LogError($"[Movement] HATA: Çarpılan '{collision.gameObject.name}' objesinde 'Castle' scripti bulunamadı!");
+            if (castle != null)
+            {
+                castle.TakeDamage(attackDamage);
+                
+                CharacterSpawner.onCharacterDestroy?.Invoke();
+                Destroy(gameObject);
+            }
         }
     }
-    else
-    {
-        Debug.LogWarning($"[Movement] Çarpılan objenin tag'i 'Castle' değil! Mevcut tag: {collision.gameObject.tag}");
-    }
-}
 }

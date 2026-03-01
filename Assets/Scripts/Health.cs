@@ -18,11 +18,10 @@ public class Health : MonoBehaviour
     [SerializeField] private GameObject hpBarPrefab;
     [SerializeField] private Vector3 hpBarOffset = new Vector3(0f, 1.0f, 0f);
 
-private GameObject hpBarInstance;
+    private GameObject hpBarInstance;
 
     private bool isDead = false;
 
-    
     public int CurrentHP => currentHitPoints;
     public int MaxHP => maxHitPoints;
 
@@ -33,19 +32,20 @@ private GameObject hpBarInstance;
 
         currentHitPoints = maxHitPoints;
     }
-   private void Start()
-{
-    if (hpBarPrefab == null) return;
 
-    hpBarInstance = Instantiate(hpBarPrefab, transform.position + hpBarOffset, Quaternion.identity);
-
-    HealthBar hb = hpBarInstance.GetComponent<HealthBar>();
-    if (hb != null)
+    private void Start()
     {
-        hb.health = this;
-        hb.offset = hpBarOffset;
+        if (hpBarPrefab == null) return;
+
+        hpBarInstance = Instantiate(hpBarPrefab, transform.position + hpBarOffset, Quaternion.identity);
+
+        HealthBar hb = hpBarInstance.GetComponent<HealthBar>();
+        if (hb != null)
+        {
+            hb.health = this;
+            hb.offset = hpBarOffset;
+        }
     }
-}
 
     public void TakeDamage(int dmg)
     {
@@ -53,25 +53,26 @@ private GameObject hpBarInstance;
 
         currentHitPoints -= dmg;
 
-        
         if (sfxSource != null && hitSfx != null)
             sfxSource.PlayOneShot(hitSfx);
 
-        
         if (currentHitPoints <= 0)
         {
-           isDead = true;
+            isDead = true;
 
-        if (sfxSource != null && deathSfx != null)
-            sfxSource.PlayOneShot(deathSfx);
+            if (sfxSource != null && deathSfx != null)
+                sfxSource.PlayOneShot(deathSfx);
 
-    
-        if (hpBarInstance != null)
-            Destroy(hpBarInstance, destroyDelay);
+            if (hpBarInstance != null)
+                Destroy(hpBarInstance, destroyDelay);
 
-        Destroy(gameObject, destroyDelay);
+            // Notify the spawner that this unit is dead
+            CharacterSpawner.onCharacterDestroy?.Invoke();
+
+            Destroy(gameObject, destroyDelay);
         }
     }
+
     public void FullHeal()
     {
         if (isDead) return;

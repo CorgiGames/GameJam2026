@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Required for Scene transition
 
 public class TowerCombatManager : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class TowerCombatManager : MonoBehaviour
     [Header("UI References")]
     public Transform handPanel;
     public GameObject cardPrefab;
+    
+    [Header("Scene Management")]
+    public string lostSceneName = "LostScreen";
 
     [Header("Hand Settings")]
     public int maxHandSize = 4;
@@ -21,8 +25,10 @@ public class TowerCombatManager : MonoBehaviour
     [Header("VFX")]
     public GameObject turretDestroyVfxPrefab;
 
-    // Temporary copy of the deck for single-use card logic
     private List<CardData> drawPile = new List<CardData>();
+    
+    // Flag to prevent multiple triggers
+    private bool isGameOver = false;
 
     void Start()
     {
@@ -30,12 +36,39 @@ public class TowerCombatManager : MonoBehaviour
         DrawInitialHand();
     }
 
+    void Update()
+    {
+        if (!isGameOver)
+        {
+            CheckGameOverCondition();
+        }
+    }
+
+private void CheckGameOverCondition()
+    {
+        bool isDeckEmpty = drawPile.Count == 0;
+        bool isHandEmpty = handPanel.childCount == 0;
+        bool noActiveUnits = CharacterSpawner.main.activeUnitCount == 0;
+
+        if (isDeckEmpty && isHandEmpty && noActiveUnits)
+        {
+            TriggerGameOver();
+        }
+    }
+
+    private void TriggerGameOver()
+    {
+        isGameOver = true;
+        Debug.Log("Game Over! No playable cards and no active units remain. Loading LostScreen.");
+        SceneManager.LoadScene(lostSceneName);
+    }
+
     private System.Collections.IEnumerator FreezeTurrets(float seconds)
-{
-    Turret.IsFrozen = true;
-    yield return new WaitForSeconds(seconds);
-    Turret.IsFrozen = false;
-}
+    {
+        Turret.IsFrozen = true;
+        yield return new WaitForSeconds(seconds);
+        Turret.IsFrozen = false;
+    }
 
     private void InitializeDeck()
     {
@@ -88,29 +121,28 @@ public class TowerCombatManager : MonoBehaviour
         Debug.Log("Drawn card: " + drawnCard.cardName + ". Remaining cards: " + drawPile.Count);
     }
 
-
-private void DestroyOneTurret()
-{
-    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
-
-    if (turrets.Length == 0)
+    private void DestroyOneTurret()
     {
-        Debug.LogWarning("No turrets found to destroy (Turret component not found in scene).");
-        return;
+        Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
+
+        if (turrets.Length == 0)
+        {
+            Debug.LogWarning("No turrets found to destroy (Turret component not found in scene).");
+            return;
+        }
+
+        Turret chosen = turrets[Random.Range(0, turrets.Length)];
+        Vector3 pos = chosen.transform.position;
+
+        if (turretDestroyVfxPrefab != null)
+        {
+            GameObject vfx = Instantiate(turretDestroyVfxPrefab, pos, Quaternion.identity);
+            Destroy(vfx, 2f);
+        }
+
+        Destroy(chosen.gameObject);
+        Debug.Log("Destroyed 1 turret!");
     }
-
-    Turret chosen = turrets[Random.Range(0, turrets.Length)];
-    Vector3 pos = chosen.transform.position;
-
-    if (turretDestroyVfxPrefab != null)
-    {
-        GameObject vfx = Instantiate(turretDestroyVfxPrefab, pos, Quaternion.identity);
-        Destroy(vfx, 2f);
-    }
-
-    Destroy(chosen.gameObject);
-    Debug.Log("Destroyed 1 turret!");
-}
 
     public bool CanPlayCard()
     {
@@ -118,60 +150,59 @@ private void DestroyOneTurret()
     }
 
     public void PlayCard(GameObject cardObject, CardData cardData)
-{
-    if (!CanPlayCard())
     {
-        Debug.LogWarning("Cooldown is active. Cannot play card yet.");
-        return;
-    }
-
-    lastCardPlayTime = Time.time;
-
-    Debug.Log("Played card: " + cardData.cardName);
-
-    if (cardData.cardName == "Heal")  
-    {
-        Health[] allHealth = FindObjectsOfType<Health>();
-
-        foreach (var h in allHealth)
-            h.FullHeal();
-
-    Debug.Log("Heal card effect applied: all alive characters healed to full.");
-    }
-
-    if (cardData.cardName == "Freeze") 
-    {
-    StartCoroutine(FreezeTurrets(5f));
-    Debug.Log("Freeze card played: Turrets frozen for 5 seconds.");
-    }
-
-    if (cardData.cardName == "Destruction")
-    {
-    DestroyOneTurret();
-    Debug.Log("Destruction card played: destroyed one turret.");
-    }
-
-
-    
-    if (cardData.cardName == "Speed")  
-    {
-        CharacterMovement[] allCharacters = FindObjectsOfType<CharacterMovement>();
-
-        foreach (var ch in allCharacters)
+        if (!CanPlayCard())
         {
-            ch.AddMoveSpeed(1f); 
+            Debug.LogWarning("Cooldown is active. Cannot play card yet.");
+            return;
         }
 
-        Debug.Log("Speed card effect applied: all characters speed +1");
+        lastCardPlayTime = Time.time;
+
+        Debug.Log("Played card: " + cardData.cardName);
+
+        if (cardData.cardName == "Heal")  
+        {
+            Health[] allHealth = FindObjectsOfType<Health>();
+
+            foreach (var h in allHealth)
+                h.FullHeal();
+
+            Debug.Log("Heal card effect applied: all alive characters healed to full.");
+        }
+
+        if (cardData.cardName == "Freeze") 
+        {
+            StartCoroutine(FreezeTurrets(5f));
+            Debug.Log("Freeze card played: Turrets frozen for 5 seconds.");
+        }
+
+        if (cardData.cardName == "Destruction")
+        {
+            DestroyOneTurret();
+            Debug.Log("Destruction card played: destroyed one turret.");
+        }
+
+        if (cardData.cardName == "Speed")  
+        {
+            CharacterMovement[] allCharacters = FindObjectsOfType<CharacterMovement>();
+
+            foreach (var ch in allCharacters)
+            {
+                ch.AddMoveSpeed(1f); 
+            }
+
+            Debug.Log("Speed card effect applied: all characters speed +1");
+        }
+
+        Destroy(cardObject);
+        DrawCard();
     }
 
-    Destroy(cardObject);
-    DrawCard();
-}
     public float GetRemainingCooldown()
-{
-    float timeSinceLastPlay = Time.time - lastCardPlayTime;
-    float remaining = cardPlayCooldown - timeSinceLastPlay;
-    return Mathf.Max(0, remaining);
-}
+    {
+        float timeSinceLastPlay = Time.time - lastCardPlayTime;
+        float remaining = cardPlayCooldown - timeSinceLastPlay;
+        return Mathf.Max(0, remaining);
+    }
 }
