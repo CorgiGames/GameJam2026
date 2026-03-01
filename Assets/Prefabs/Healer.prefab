@@ -120,6 +120,10 @@ PrefabInstance:
       propertyPath: sfxSource
       value: 
       objectReference: {fileID: 100876361860449594}
+    - target: {fileID: 7526234319486247584, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+      propertyPath: maxHitPoints
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8391488026543194639, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       propertyPath: rb
       value: 
