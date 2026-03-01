@@ -23770,6 +23770,8 @@ MonoBehaviour:
   maxHandSize: 4
   cardPlayCooldown: 1
   turretDestroyVfxPrefab: {fileID: 2896969754596957120, guid: 9fcd771b022c3e94b9064b031b858faf, type: 3}
+  rangeDebuffDuration: 5
+  rofDebuffDuration: 5
 --- !u!4 &1619124088
 Transform:
   m_ObjectHideFlags: 0
