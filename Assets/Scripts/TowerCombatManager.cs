@@ -57,6 +57,52 @@ public class TowerCombatManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private float rangeDebuffDuration = 5f;
+
+private void ReduceTurretRangeTemporarily()
+{
+    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
+
+    if (turrets.Length == 0)
+    {
+        Debug.LogWarning("No turrets found.");
+        return;
+    }
+
+    StartCoroutine(RangeDebuffCoroutine(turrets));
+}
+
+private System.Collections.IEnumerator RangeDebuffCoroutine(Turret[] turrets)
+{
+    Dictionary<Turret, float> originalRanges = new Dictionary<Turret, float>();
+
+    // Orijinal deðerleri kaydet ve yarýya indir
+    foreach (Turret turret in turrets)
+    {
+        if (turret != null)
+        {
+            float original = turret.GetRange();
+            originalRanges[turret] = original;
+            turret.SetRange(original * 0.5f);
+        }
+    }
+
+    Debug.Log("Turret range reduced by 50%.");
+
+    yield return new WaitForSeconds(rangeDebuffDuration);
+
+    // Süre bitince eski haline döndür
+    foreach (var pair in originalRanges)
+    {
+        if (pair.Key != null)
+        {
+            pair.Key.SetRange(pair.Value);
+        }
+    }
+
+    Debug.Log("Turret range restored.");
+}
+
     private void TriggerGameOver()
     {
         isGameOver = true;
@@ -184,6 +230,11 @@ public class TowerCombatManager : MonoBehaviour
             Debug.Log("Heal card effect applied: all alive characters healed to full.");
         }
 
+        if (cardData.cardName == "Range")
+        {
+            ReduceTurretRangeTemporarily();
+        }
+
         if (cardData.cardName == "Freeze") 
         {
             StartCoroutine(FreezeTurrets(5f));
@@ -195,6 +246,11 @@ public class TowerCombatManager : MonoBehaviour
             DestroyOneTurret();
             Debug.Log("Destruction card played: destroyed one turret.");
         }
+
+        if (cardData.cardName == "RateOfFire")   
+            {
+              ReduceTurretFireRateTemporarily();
+            }
 
         if (cardData.cardName == "Speed")  
         {
@@ -211,6 +267,51 @@ public class TowerCombatManager : MonoBehaviour
         Destroy(cardObject);
         DrawCard();
     }
+
+    [SerializeField] private float rofDebuffDuration = 5f;
+
+private void ReduceTurretFireRateTemporarily()
+{
+    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
+
+    if (turrets.Length == 0)
+    {
+        Debug.LogWarning("No turrets found.");
+        return;
+    }
+
+    StartCoroutine(RofDebuffCoroutine(turrets));
+}
+
+private System.Collections.IEnumerator RofDebuffCoroutine(Turret[] turrets)
+{
+    
+    Dictionary<Turret, float> originalBps = new Dictionary<Turret, float>();
+
+    foreach (Turret t in turrets)
+    {
+        if (t == null) continue;
+
+        float bps0 = t.GetBps();
+        originalBps[t] = bps0;
+
+        
+        t.SetBps(bps0 * 0.5f);
+    }
+
+    Debug.Log("ROF debuff applied: turret bps reduced by 50% for 5s.");
+
+    yield return new WaitForSeconds(rofDebuffDuration);
+
+    
+    foreach (var pair in originalBps)
+    {
+        if (pair.Key != null)
+            pair.Key.SetBps(pair.Value);
+    }
+
+    Debug.Log("ROF debuff ended: turret bps restored.");
+}
 
     public float GetRemainingCooldown()
     {
