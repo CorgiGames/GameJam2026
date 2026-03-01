@@ -18,6 +18,9 @@ public class TowerCombatManager : MonoBehaviour
     public float cardPlayCooldown = 2f;
     private float lastCardPlayTime = -100f;
 
+    [Header("VFX")]
+    public GameObject turretDestroyVfxPrefab;
+
     // Temporary copy of the deck for single-use card logic
     private List<CardData> drawPile = new List<CardData>();
 
@@ -26,6 +29,13 @@ public class TowerCombatManager : MonoBehaviour
         InitializeDeck();
         DrawInitialHand();
     }
+
+    private System.Collections.IEnumerator FreezeTurrets(float seconds)
+{
+    Turret.IsFrozen = true;
+    yield return new WaitForSeconds(seconds);
+    Turret.IsFrozen = false;
+}
 
     private void InitializeDeck()
     {
@@ -78,26 +88,86 @@ public class TowerCombatManager : MonoBehaviour
         Debug.Log("Drawn card: " + drawnCard.cardName + ". Remaining cards: " + drawPile.Count);
     }
 
+
+private void DestroyOneTurret()
+{
+    Turret[] turrets = FindObjectsByType<Turret>(FindObjectsSortMode.None);
+
+    if (turrets.Length == 0)
+    {
+        Debug.LogWarning("No turrets found to destroy (Turret component not found in scene).");
+        return;
+    }
+
+    Turret chosen = turrets[Random.Range(0, turrets.Length)];
+    Vector3 pos = chosen.transform.position;
+
+    if (turretDestroyVfxPrefab != null)
+    {
+        GameObject vfx = Instantiate(turretDestroyVfxPrefab, pos, Quaternion.identity);
+        Destroy(vfx, 2f);
+    }
+
+    Destroy(chosen.gameObject);
+    Debug.Log("Destroyed 1 turret!");
+}
+
     public bool CanPlayCard()
     {
         return Time.time >= lastCardPlayTime + cardPlayCooldown;
     }
 
     public void PlayCard(GameObject cardObject, CardData cardData)
+{
+    if (!CanPlayCard())
     {
-        if (!CanPlayCard())
+        Debug.LogWarning("Cooldown is active. Cannot play card yet.");
+        return;
+    }
+
+    lastCardPlayTime = Time.time;
+
+    Debug.Log("Played card: " + cardData.cardName);
+
+    if (cardData.cardName == "Heal")  
+    {
+        Health[] allHealth = FindObjectsOfType<Health>();
+
+        foreach (var h in allHealth)
+            h.FullHeal();
+
+    Debug.Log("Heal card effect applied: all alive characters healed to full.");
+    }
+
+    if (cardData.cardName == "Freeze") 
+    {
+    StartCoroutine(FreezeTurrets(5f));
+    Debug.Log("Freeze card played: Turrets frozen for 5 seconds.");
+    }
+
+    if (cardData.cardName == "Destruction")
+    {
+    DestroyOneTurret();
+    Debug.Log("Destruction card played: destroyed one turret.");
+    }
+
+
+    
+    if (cardData.cardName == "Speed")  
+    {
+        CharacterMovement[] allCharacters = FindObjectsOfType<CharacterMovement>();
+
+        foreach (var ch in allCharacters)
         {
-            Debug.LogWarning("Cooldown is active. Cannot play card yet.");
-            return;
+            ch.AddMoveSpeed(1f); 
         }
 
-        lastCardPlayTime = Time.time;
-
-        Debug.Log("Played card: " + cardData.cardName);
-
-        Destroy(cardObject);
-        DrawCard();
+        Debug.Log("Speed card effect applied: all characters speed +1");
     }
+
+    Destroy(cardObject);
+    DrawCard();
+}
     public float GetRemainingCooldown()
 {
     float timeSinceLastPlay = Time.time - lastCardPlayTime;

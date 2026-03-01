@@ -14,15 +14,17 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI costText;
 
-    void Start()
+  void Start()
+{
+    draftManager = FindObjectOfType<DraftManager>();
+
+    
+    if (draftManager == null)
     {
-        draftManager = FindObjectOfType<DraftManager>();
         
-        if (draftManager == null)
-        {
-            Debug.LogError("CardDisplay: DraftManager not found in the scene.");
-        }
+        return;
     }
+}
 
     public void SetupCard(CardData data)
     {

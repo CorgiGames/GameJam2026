@@ -24,8 +24,11 @@ public class Turret : MonoBehaviour
     private Transform target;
     private float timeUntilFire;
 
+    public static bool IsFrozen = false;
+
     private void Update()
     {
+        if (IsFrozen) return;
         if (target == null)
         {
             FindTarget();

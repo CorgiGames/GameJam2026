@@ -72,4 +72,9 @@ private GameObject hpBarInstance;
         Destroy(gameObject, destroyDelay);
         }
     }
+    public void FullHeal()
+    {
+        if (isDead) return;
+        currentHitPoints = maxHitPoints;
+    }
 }

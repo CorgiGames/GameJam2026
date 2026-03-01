@@ -3,19 +3,28 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public Health health;         
-    public Image fillImage;       
+    public Health health;
+    public Image fillImage;
     public Vector3 offset = new Vector3(0f, 1.0f, 0f);
 
     void LateUpdate()
     {
-        if (health == null) Destroy(gameObject);
+        
+        if (health == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        
+        if (fillImage == null)
+            return;
 
         
         transform.position = health.transform.position + offset;
 
         
-        float ratio = (float)health.CurrentHP / health.MaxHP;
+        float ratio = (health.MaxHP <= 0) ? 0f : (float)health.CurrentHP / health.MaxHP;
         fillImage.fillAmount = Mathf.Clamp01(ratio);
     }
 }

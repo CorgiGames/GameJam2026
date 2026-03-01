@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: b7e3365c6ffe3724193cf3834c865aa5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerDeckData: {instanceID: 0}
+  - handPanel: {instanceID: 0}
+  - cardPrefab: {instanceID: 0}
+  - turretDestroyVfxPrefab: {fileID: 2896969754596957120, guid: 9fcd771b022c3e94b9064b031b858faf, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
