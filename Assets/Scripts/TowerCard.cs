@@ -34,6 +34,19 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+    private System.Collections.IEnumerator ApplyTemporaryRangeBuff(float buffedRange, float normalRange, float duration)
+    {
+        // 1. Set the range to the reduced value
+        Turret.OnRangeBuffReceived?.Invoke(buffedRange);
+        Debug.Log("Range Reduced!");
+
+        // 2. Wait for the duration (e.g., 5 seconds)
+        yield return new WaitForSeconds(duration);
+
+        // 3. Set it back to normal
+        Turret.OnRangeBuffReceived?.Invoke(normalRange);
+        Debug.Log("Range Restored to normal.");
+    }
 
     // Detects clicks on the UI element
     public void OnPointerClick(PointerEventData eventData)
@@ -75,6 +88,7 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
                 {
                     // 1. Tell the spawner to buff all existing turrets
                     Turret.OnRangeBuffReceived?.Invoke(1.5f);
+                    StartCoroutine(ApplyTemporaryRangeBuff(1.5f, 3.0f, 5.0f));
 
                     // 2. Play the card (cooldown/cost)
                     combatManager.PlayCard(this.gameObject, cardData);

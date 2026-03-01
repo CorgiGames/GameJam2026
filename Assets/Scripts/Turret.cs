@@ -51,8 +51,15 @@ public class Turret : MonoBehaviour
         }
 
     }
+    private void OnEnable() => Turret.OnRangeBuffReceived += UpdateRange;
+    private void OnDisable() => Turret.OnRangeBuffReceived -= UpdateRange;
 
-  private void Shoot()
+    private void UpdateRange(float newRange)
+    {
+        this.targetingRange = newRange;
+    }
+
+    private void Shoot()
 {
     if (sfxSource != null && shootSfx != null)
         sfxSource.PlayOneShot(shootSfx);
