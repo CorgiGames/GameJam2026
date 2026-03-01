@@ -24365,7 +24365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e3365c6ffe3724193cf3834c865aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerCombatManager
-  playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}
+  playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
   handPanel: {fileID: 1346340940}
   cardPrefab: {fileID: 4949092312007608340, guid: 819bc7f3d10e75d4eb8351a858d49393, type: 3}
   cardsLeftText: {fileID: 1812827777}

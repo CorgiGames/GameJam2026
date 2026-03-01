@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class DraftManager : MonoBehaviour
 {
+    [Header("Round Settings")]
+    public bool isFirstRound = true; // NEW: Controls whether to wipe or load the deck
+
     [Header("Special Card References")]
     public DoubleDice doubleDice;
 
@@ -93,17 +96,17 @@ public class DraftManager : MonoBehaviour
         if (viewAllButton != null) viewAllButton.gameObject.SetActive(false);
         if (cardDetailModal != null) cardDetailModal.SetActive(false);
 
-        // --- NEW: Load previous deck logic based on current round ---
         if (playerDeckData != null)
         {
-            if (playerDeckData.currentRound == 1)
+            // NEW LOGIC: Uses the explicit boolean to prevent data loss
+            if (isFirstRound)
             {
-                playerDeckData.ClearDeck();
-                Debug.Log("[Draft] Round 1: Deck cleared.");
+                playerDeckData.ResetGameData(); // Clears deck AND resets round to 1
+                Debug.Log("[Draft] Round 1: Setup complete. Deck cleared.");
             }
-            else if (playerDeckData.currentRound == 2)
+            else
             {
-                LoadPreviousDeck();
+                LoadPreviousDeck(); // Retains the deck for Round 2+
             }
         }
         else
@@ -116,10 +119,13 @@ public class DraftManager : MonoBehaviour
         RollCards(); 
     }
 
-    // --- NEW: Method to load existing cards into the UI ---
     private void LoadPreviousDeck()
     {
-        if (playerDeckData == null || playerDeckData.savedDeck.Count == 0) return;
+        if (playerDeckData == null || playerDeckData.savedDeck.Count == 0)
+        {
+            Debug.LogWarning("[Draft] No previous deck found to load.");
+            return;
+        }
 
         foreach (CardData card in playerDeckData.savedDeck)
         {
@@ -144,7 +150,7 @@ public class DraftManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"[Draft] Loaded {playerDeck.Count} cards from previous round.");
+        Debug.Log($"[Draft] Successfully loaded {playerDeck.Count} cards from previous round.");
     }
 
     void UpdateUI()

@@ -4766,6 +4766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78381ceae0486da42b4f3c2eec28d0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DraftManager
+  isFirstRound: 1
   doubleDice: {fileID: 1162328634}
   randomCardPopup: {fileID: 1331694505}
   popupImage: {fileID: 1795476791}
@@ -4785,7 +4786,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5f605c1b4349a4e4d98babfd16f02be7, type: 2}
   - {fileID: 11400000, guid: cce9e860857ffc241a9a5e6050e46767, type: 2}
   - {fileID: 11400000, guid: bcca5e53f4717494da2424fed6f5a357, type: 2}
-  playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}
+  playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
   nextSceneName: Tower
   cardSlots:
   - {fileID: 1308016290}
@@ -4806,7 +4807,7 @@ MonoBehaviour:
   unitCountText: {fileID: 863091363}
   buffCountText: {fileID: 1288745643}
   sabotageCountText: {fileID: 1973101999}
-  startingCoins: 100
+  startingCoins: 50
   currentRerollCost: 1
   sfxSource: {fileID: 1963542322}
   buyCardSfx: {fileID: 8300000, guid: ea060749f0c19b34082844d528c10d93, type: 3}

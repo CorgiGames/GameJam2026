@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Castle
   playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
   maxHealth: 100
-  draftSceneName: Draft
+  round2DraftSceneName: Draft2
   winSceneName: WinScene
   healthText: {fileID: 0}
   healthBarFill: {fileID: 426831300}
@@ -4160,7 +4160,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1357956045
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7381207880946769129, guid: ed4454fecee7e7c4f843005c2b53fa9a, type: 3}
@@ -4923,7 +4923,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1357956045
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7381207880946769129, guid: ed4454fecee7e7c4f843005c2b53fa9a, type: 3}
@@ -6165,7 +6165,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1357956045
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7381207880946769129, guid: ed4454fecee7e7c4f843005c2b53fa9a, type: 3}
@@ -11757,7 +11757,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1357956045
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7381207880946769129, guid: ed4454fecee7e7c4f843005c2b53fa9a, type: 3}
@@ -14315,7 +14315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1357956045
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7381207880946769129, guid: ed4454fecee7e7c4f843005c2b53fa9a, type: 3}
@@ -23765,7 +23765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e3365c6ffe3724193cf3834c865aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerCombatManager
-  playerDeckData: {fileID: 11400000, guid: 8c9048bafc5347e45bab7c9496952c9b, type: 2}
+  playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
   handPanel: {fileID: 1346340940}
   cardPrefab: {fileID: 4949092312007608340, guid: 819bc7f3d10e75d4eb8351a858d49393, type: 3}
   cardsLeftText: {fileID: 1812827777}
@@ -23773,6 +23773,8 @@ MonoBehaviour:
   maxHandSize: 4
   cardPlayCooldown: 1
   turretDestroyVfxPrefab: {fileID: 2896969754596957120, guid: 9fcd771b022c3e94b9064b031b858faf, type: 3}
+  rangeDebuffDuration: 5
+  rofDebuffDuration: 5
 --- !u!4 &1619124088
 Transform:
   m_ObjectHideFlags: 0
