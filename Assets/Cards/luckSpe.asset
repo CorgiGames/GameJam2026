@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Luck
   cardType: 3
+  specialEffect: 2
   cost: 6
   cardIcon: {fileID: 7324782304291205637, guid: 9755eef0cfde7884693e199f35ef59c6, type: 3}
+  characterPrefab: {fileID: 0}
