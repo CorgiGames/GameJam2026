@@ -34,14 +34,28 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+    private System.Collections.IEnumerator ApplyTemporaryRangeBuff(float buffedRange, float normalRange, float duration)
+    {
+        // 1. Set the range to the reduced value
+        Turret.OnRangeBuffReceived?.Invoke(buffedRange);
+        Debug.Log("Range Reduced!");
 
-    // Detects clicks on the UI element
+        // 2. Wait for the duration (e.g., 5 seconds)
+        yield return new WaitForSeconds(duration);
+
+        // 3. Set it back to normal
+        Turret.OnRangeBuffReceived?.Invoke(normalRange);
+        Debug.Log("Range Restored to normal.");
+    }
+
 public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (combatManager != null && cardData != null)
             {
+                // BUG FIX: Ýþleme baþlamadan önce cooldown kontrolü yap.
+                // Eðer kart oynanamýyorsa, metodu burada tamamen kes.
                 if (!combatManager.CanPlayCard()) return;
 
                 if (cardData.cardType == CardType.Unit)
@@ -84,5 +98,6 @@ public void OnPointerClick(PointerEventData eventData)
             }
         }
     }
+
    
 }

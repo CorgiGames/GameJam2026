@@ -107,10 +107,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6868751516794487510}
   m_SourcePrefab: {fileID: 100100000, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
 --- !u!50 &3831372922746280507 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 6065416279575139193, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
   m_PrefabInstance: {fileID: 6991674215374326082}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5055746184770828648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
+  m_PrefabInstance: {fileID: 6991674215374326082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6868751516794487510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5055746184770828648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90bbea27090f0fc4a9eda08b8af054c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthBarSpawner
+  hpBarPrefab: {fileID: 6799110374877902529, guid: f961fb258381ce745b7a35f2ea3da7d3, type: 3}
+  offset: {x: 0, y: 1, z: 0}

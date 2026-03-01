@@ -48,17 +48,22 @@ public class CharacterMovement : MonoBehaviour
         rb.linearVelocity = direction * moveSpeed;
     }
 
+    public void AddMoveSpeed(float amount)
+{
+    moveSpeed += amount;
+}
+
 private void OnTriggerEnter2D(Collider2D collision)
 {
-    // Adım 1: Çarpılan objenin adını ve tag'ini yazdır
+    
     Debug.Log($"[Movement] Çarpışma gerçekleşti! Obje: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
 
-    // Adım 2: Tag kontrolü (Büyük-küçük harf duyarlıdır!)
+   
     if (collision.CompareTag("Castle"))
     {
         Debug.Log("[Movement] 'Castle' tag'i doğrulandı.");
 
-        // Adım 3: Script erişim kontrolü
+        
         Castle castle = collision.GetComponent<Castle>();
         
         if (castle != null)

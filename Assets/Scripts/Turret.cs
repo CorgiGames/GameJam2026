@@ -28,8 +28,11 @@ public class Turret : MonoBehaviour
 
 
 
+    public static bool IsFrozen = false;
+
     private void Update()
     {
+        if (IsFrozen) return;
         if (target == null)
         {
             FindTarget();
@@ -51,8 +54,15 @@ public class Turret : MonoBehaviour
         }
 
     }
+    private void OnEnable() => Turret.OnRangeBuffReceived += UpdateRange;
+    private void OnDisable() => Turret.OnRangeBuffReceived -= UpdateRange;
 
-  private void Shoot()
+    private void UpdateRange(float newRange)
+    {
+        this.targetingRange = newRange;
+    }
+
+    private void Shoot()
 {
     if (sfxSource != null && shootSfx != null)
         sfxSource.PlayOneShot(shootSfx);
