@@ -96,8 +96,31 @@ public class Turret : MonoBehaviour
         targetRotation, rotationSpeed * Time.deltaTime);
     }
 
+public float GetBps()
+{
+    return bps;
+}
+
+public void SetBps(float newBps)
+{
+    bps = newBps;
+}
+
+    public float GetRange()
+{
+    return targetingRange;
+}
+
+public void SetRange(float newRange)
+{
+    targetingRange = newRange;
+}
+
     private void OnDrawGizmosSelected()
 {
+
+
+
 #if UNITY_EDITOR
     Handles.color = Color.cyan;
     Handles.DrawWireDisc(transform.position, transform.forward, targetingRange);
