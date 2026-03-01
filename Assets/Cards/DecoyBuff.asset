@@ -16,3 +16,4 @@ MonoBehaviour:
   cardType: 1
   cost: 7
   cardIcon: {fileID: 1363698645023624400, guid: 3f8dcddb40da6a54a9fd0f70e8f7a9bc, type: 3}
+  characterPrefab: {fileID: 5055746184770828648, guid: dc37a2ab796073e41aae8e2709161cfb, type: 3}

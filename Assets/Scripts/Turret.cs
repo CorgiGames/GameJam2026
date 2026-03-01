@@ -1,6 +1,7 @@
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using System;
 #endif
 
 
@@ -13,7 +14,7 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform firingPoint;
 
     [Header("Attribute")]
-    [SerializeField] private float targetingRange = 5f;
+    [SerializeField] private float targetingRange = 3f;
     [SerializeField] private float rotationSpeed = 0f;
     [SerializeField] private float bps = 1f;
 
@@ -23,6 +24,9 @@ public class Turret : MonoBehaviour
 
     private Transform target;
     private float timeUntilFire;
+    public static Action<float> OnRangeBuffReceived;
+
+
 
     public static bool IsFrozen = false;
 
@@ -50,8 +54,15 @@ public class Turret : MonoBehaviour
         }
 
     }
+    private void OnEnable() => Turret.OnRangeBuffReceived += UpdateRange;
+    private void OnDisable() => Turret.OnRangeBuffReceived -= UpdateRange;
 
-  private void Shoot()
+    private void UpdateRange(float newRange)
+    {
+        this.targetingRange = newRange;
+    }
+
+    private void Shoot()
 {
     if (sfxSource != null && shootSfx != null)
         sfxSource.PlayOneShot(shootSfx);
