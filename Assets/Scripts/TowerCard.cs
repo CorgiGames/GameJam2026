@@ -88,6 +88,11 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
                     Turret.OnRangeBuffReceived?.Invoke(1.5f);
                     combatManager.PlayCard(this.gameObject, cardData);
                 }
+                else if (cardData.cardName == "Protection")
+                {
+                    CharacterSpawner.main.ActivateInvincibility(5f);
+                    combatManager.PlayCard(this.gameObject, cardData);
+                }
                 else
                 {
                     combatManager.PlayCard(this.gameObject, cardData);

@@ -21,6 +21,7 @@ public class Health : MonoBehaviour
     private GameObject hpBarInstance;
 
     private bool isDead = false;
+    private bool isInvincible = false;
 
     public int CurrentHP => currentHitPoints;
     public int MaxHP => maxHitPoints;
@@ -50,6 +51,7 @@ public class Health : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         if (isDead) return;
+        if (isInvincible) return;
 
         currentHitPoints -= dmg;
 
@@ -71,6 +73,11 @@ public class Health : MonoBehaviour
 
             Destroy(gameObject, destroyDelay);
         }
+    }
+    public void SetInvincible(bool status)
+    {
+        isInvincible = status;
+        // Optional: Change color to gold or add a shield effect here
     }
 
     public void FullHeal()
