@@ -14,6 +14,12 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI costText;
 
+    private void Start()
+    {
+        // Sahnedeki DraftManager objesini otomatik olarak bulup referansı atar
+        draftManager = FindObjectOfType<DraftManager>();
+    }
+
     public void SetupCard(CardData data)
     {
         if (data == null) return;
@@ -43,6 +49,10 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler
             if (cardData != null && draftManager != null)
             {
                 draftManager.OpenCardDetailModal(cardData);
+            }
+            else if (draftManager == null)
+            {
+                Debug.LogWarning("[CardDisplay] DraftManager bulunamadı! Sağ tık işlemi iptal edildi.");
             }
         }
     }

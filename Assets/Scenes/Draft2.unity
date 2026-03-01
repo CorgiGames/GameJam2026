@@ -4807,7 +4807,7 @@ MonoBehaviour:
   unitCountText: {fileID: 863091363}
   buffCountText: {fileID: 1288745643}
   sabotageCountText: {fileID: 1973101999}
-  startingCoins: 100
+  startingCoins: 50
   currentRerollCost: 1
   sfxSource: {fileID: 1963542322}
   buyCardSfx: {fileID: 8300000, guid: ea060749f0c19b34082844d528c10d93, type: 3}
