@@ -49,7 +49,7 @@ public class DoubleDice : MonoBehaviour
         int totalSum = (finalResult1 + 1) + (finalResult2 + 1);
 
         
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
 
         isRolling = false;
