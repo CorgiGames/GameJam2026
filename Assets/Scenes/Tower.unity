@@ -1394,7 +1394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad34bf6031a7234a88b7e9d4334fa10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Castle
+  playerDeckData: {fileID: 11400000, guid: 045999c55392d474eb5469749b0869d5, type: 2}
   maxHealth: 100
+  draftSceneName: Draft
+  winSceneName: WinScene
   healthText: {fileID: 0}
   healthBarFill: {fileID: 426831300}
 --- !u!61 &68313969
