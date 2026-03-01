@@ -12,30 +12,26 @@ public class DraftManager : MonoBehaviour
     [Header("Random Card Popup")]
     public GameObject randomCardPopup;
     public Image popupImage;
-    public Sprite cardBackSprite; // Kartın arka yüzü görseli
+    public Sprite cardBackSprite; 
     
     private System.Collections.IEnumerator ShowRandomCardSequence(CardData wonCard)
     {
-        // Güvenlik kontrolü
         if (randomCardPopup == null || popupImage == null)
         {
-            Debug.LogError("[Draft] HATA: randomCardPopup veya popupImage Inspector'da atanmamış!");
+            Debug.LogError("[Draft] ERROR: randomCardPopup or popupImage is not assigned in the Inspector!");
             ProcessCardAddition(wonCard);
             yield break;
         }
 
-        // Paneli aç ve orada bırak
         randomCardPopup.SetActive(true);
-        Debug.Log("[Draft] Popup açıldı. Eğer ekranda görmüyorsan Hierarchy'den objeyi seçip RectTransform ayarlarını kontrol et.");
+        Debug.Log("[Draft] Popup opened. If not visible, check RectTransform settings in Hierarchy.");
         
-        // Önce kartın arkasını göster
         popupImage.sprite = cardBackSprite;
         
-        // 1 saniye sonra kartı çevir
         yield return new WaitForSeconds(1.0f); 
         
         popupImage.sprite = wonCard.cardIcon;
-        Debug.Log($"[Draft] Kart çevrildi: {wonCard.cardName}");
+        Debug.Log($"[Draft] Card revealed: {wonCard.cardName}");
 
         ProcessCardAddition(wonCard);
     }
@@ -97,9 +93,58 @@ public class DraftManager : MonoBehaviour
         if (viewAllButton != null) viewAllButton.gameObject.SetActive(false);
         if (cardDetailModal != null) cardDetailModal.SetActive(false);
 
+        // --- NEW: Load previous deck logic based on current round ---
+        if (playerDeckData != null)
+        {
+            if (playerDeckData.currentRound == 1)
+            {
+                playerDeckData.ClearDeck();
+                Debug.Log("[Draft] Round 1: Deck cleared.");
+            }
+            else if (playerDeckData.currentRound == 2)
+            {
+                LoadPreviousDeck();
+            }
+        }
+        else
+        {
+            Debug.LogError("[Draft] PlayerDeckData is not assigned!");
+        }
+
         UpdateUI();
         UpdateDeckStatsUI(); 
         RollCards(); 
+    }
+
+    // --- NEW: Method to load existing cards into the UI ---
+    private void LoadPreviousDeck()
+    {
+        if (playerDeckData == null || playerDeckData.savedDeck.Count == 0) return;
+
+        foreach (CardData card in playerDeckData.savedDeck)
+        {
+            playerDeck.Add(card);
+
+            if (currentVisibleCards < maxVisibleCards && deckCardPrefab != null && deckPanel != null)
+            {
+                GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
+                
+                Image cardImage = newDeckCard.GetComponent<Image>();
+                if (cardImage != null) cardImage.sprite = card.cardIcon;
+
+                CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
+                if (display != null) display.SetupCard(card);
+
+                currentVisibleCards++;
+
+                if (viewAllButton != null)
+                {
+                    viewAllButton.gameObject.SetActive(true);
+                    viewAllButton.transform.SetAsLastSibling();
+                }
+            }
+        }
+        Debug.Log($"[Draft] Loaded {playerDeck.Count} cards from previous round.");
     }
 
     void UpdateUI()
@@ -139,8 +184,7 @@ public class DraftManager : MonoBehaviour
             if (sfxSource != null && buyCardSfx != null)
                 sfxSource.PlayOneShot(buyCardSfx);
 
-            // LOG 1: Kartın tipini ve etkisini kontrol et
-            Debug.Log($"[BUY] Kart Alındı: {cardToBuy.cardName} | Tip: {cardToBuy.cardType} | Etki: {cardToBuy.specialEffect}");
+            Debug.Log($"[BUY] Card Bought: {cardToBuy.cardName} | Type: {cardToBuy.cardType} | Effect: {cardToBuy.specialEffect}");
 
             if (cardToBuy.cardType == CardType.Special)
             {
@@ -161,12 +205,12 @@ public class DraftManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("[DraftManager] DoubleDice referansı Inspector'da atanmamış!");
+                        Debug.LogError("[DraftManager] DoubleDice reference is not assigned in the Inspector!");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"[SPECIAL] Bu kartın etkisi ({cardToBuy.specialEffect}) henüz kodlanmamış!");
+                    Debug.LogWarning($"[SPECIAL] The effect for this card ({cardToBuy.specialEffect}) is not yet implemented!");
                 }
             }
             else
@@ -186,40 +230,37 @@ public class DraftManager : MonoBehaviour
     private void HandleLuckyCoinResult(int wonCoins)
     {
         currentCoins += wonCoins;
-        Debug.Log($"[Lucky Card] Zarlar durdu. {wonCoins} coin eklendi. Güncel bakiye: {currentCoins}");
+        Debug.Log($"[Lucky Card] Dice stopped. Added {wonCoins} coins. Current balance: {currentCoins}");
         UpdateUI();
-        CheckDraftState(); // Bakiye arttığı için satın alınabilecek kartları tekrar kontrol eder
+        CheckDraftState(); 
     }
 
     private void ProcessCardAddition(CardData cardToAdd)
     {
         if (cardToAdd == null) {
-            Debug.LogError("[Draft] Eklenecek kart verisi null!");
+            Debug.LogError("[Draft] Card data to add is null!");
             return;
         }
 
         playerDeck.Add(cardToAdd);
-        Debug.Log($"[Draft] Deste Güncellendi. Mevcut deste boyutu: {playerDeck.Count}");
+        Debug.Log($"[Draft] Deck Updated. Current deck size: {playerDeck.Count}");
         
-        // Görsel ekleme mantığı
         if (currentVisibleCards < maxVisibleCards)
         {
             if (deckCardPrefab == null || deckPanel == null)
             {
-                Debug.LogError("[Draft] HATA: deckCardPrefab veya deckPanel Inspector'da atanmamış!");
+                Debug.LogError("[Draft] ERROR: deckCardPrefab or deckPanel is not assigned in the Inspector!");
                 return;
             }
 
             GameObject newDeckCard = Instantiate(deckCardPrefab, deckPanel);
             
-            // Kartın görselini ayarla
             Image cardImage = newDeckCard.GetComponent<Image>();
             if (cardImage != null) 
             {
                 cardImage.sprite = cardToAdd.cardIcon;
             }
 
-            // Kartın verilerini CardDisplay'e aktar (Sağ tık detay için kritik)
             CardDisplay display = newDeckCard.GetComponent<CardDisplay>();
             if (display != null) 
             {
@@ -227,7 +268,7 @@ public class DraftManager : MonoBehaviour
             }
 
             currentVisibleCards++;
-            Debug.Log($"[Draft] UI Slot eklendi. Görünür kart sayısı: {currentVisibleCards}");
+            Debug.Log($"[Draft] UI Slot added. Visible cards: {currentVisibleCards}");
 
             if (viewAllButton != null)
             {
@@ -398,7 +439,7 @@ public class DraftManager : MonoBehaviour
         if (randomCardPopup != null)
         {
             randomCardPopup.SetActive(false);
-            Debug.Log("[Draft] Random kart paneli kapatıldı.");
+            Debug.Log("[Draft] Random card panel closed.");
         }
     }
 }

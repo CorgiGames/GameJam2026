@@ -13,7 +13,7 @@ public class Castle : MonoBehaviour
     private int currentHealth;
 
     [Header("Scene Management")]
-    public string draftSceneName = "Draft"; 
+    public string round2DraftSceneName = "Draft2"; 
     public string winSceneName = "WinScene";
 
     [Header("UI References")]
@@ -76,9 +76,9 @@ public class Castle : MonoBehaviour
 
         if (playerDeckData.currentRound == 1)
         {
-            Debug.Log("[Castle] Round 1 complete. Loading Draft scene for Round 2.");
-            playerDeckData.currentRound++;
-            SceneManager.LoadScene(draftSceneName);
+            Debug.Log("[Castle] Round 1 complete. Loading Round 2 Draft scene.");
+            playerDeckData.currentRound = 2;
+            SceneManager.LoadScene(round2DraftSceneName);
         }
         else
         {
