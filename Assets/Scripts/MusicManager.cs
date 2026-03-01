@@ -39,6 +39,7 @@ public class MusicManager : MonoBehaviour
         musicSource.volume = musicVolume;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+      
     }
 
     void OnDestroy()
