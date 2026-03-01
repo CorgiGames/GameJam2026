@@ -23,6 +23,9 @@ public class Health : MonoBehaviour
     private bool isDead = false;
     private bool isInvincible = false;
 
+    private SpriteRenderer sr;
+    private Color originalColor;
+
     public int CurrentHP => currentHitPoints;
     public int MaxHP => maxHitPoints;
 
@@ -30,6 +33,9 @@ public class Health : MonoBehaviour
     {
         if (sfxSource == null)
             sfxSource = GetComponent<AudioSource>();
+
+        sr = GetComponent<SpriteRenderer>();
+        if (sr != null) originalColor = sr.color;
 
         currentHitPoints = maxHitPoints;
     }
@@ -77,7 +83,16 @@ public class Health : MonoBehaviour
     public void SetInvincible(bool status)
     {
         isInvincible = status;
-        // Optional: Change color to gold or add a shield effect here
+        if (sr == null) return;
+
+        if (isInvincible)
+        {
+            sr.color = new Color(0.0f, 1.0f, 1.0f, 1.0f); 
+        }
+        else
+        { 
+            sr.color = originalColor;
+        }
     }
 
     public void FullHeal()
