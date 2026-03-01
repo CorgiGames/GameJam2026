@@ -144,10 +144,14 @@ PrefabInstance:
       addedObject: {fileID: 100876361860449594}
     - targetCorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       insertIndex: -1
+<<<<<<< HEAD
       addedObject: {fileID: -3071906246746567139}
     - targetCorrespondingSourceObject: {fileID: 2823463369131438122, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7873795399512435100}
+=======
+      addedObject: {fileID: -2580161735969842731}
+>>>>>>> 4f60341ce9db347be8b197e1976b481a13a913cc
   m_SourcePrefab: {fileID: 100100000, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}
 --- !u!1 &1205822012119644514 stripped
 GameObject:
@@ -265,14 +269,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+<<<<<<< HEAD
 --- !u!111 &-3071906246746567139
 Animation:
+=======
+--- !u!114 &-2580161735969842731
+MonoBehaviour:
+>>>>>>> 4f60341ce9db347be8b197e1976b481a13a913cc
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205822012119644514}
   m_Enabled: 1
+<<<<<<< HEAD
   serializedVersion: 4
   m_Animation: {fileID: 7400000, guid: 096e3df010898a24cb9f9ae60f5d0f1d, type: 2}
   m_Animations: []
@@ -303,6 +313,14 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+=======
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea7c6ec01d3eae489c3f93918bd6682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealerAbility
+  healInterval: 2
+  healAmount: 2
+>>>>>>> 4f60341ce9db347be8b197e1976b481a13a913cc
 --- !u!50 &7185963499039119921 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 6065416279575139193, guid: 38323f52a35a0e2468c08122115ff46b, type: 3}

@@ -5,9 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class Castle : MonoBehaviour
 {
+    [Header("Data Source")]
+    public PlayerDeckData playerDeckData;
+
     [Header("Settings")]
     public int maxHealth = 100;
     private int currentHealth;
+
+    [Header("Scene Management")]
+    public string round2DraftSceneName = "Draft2"; 
+    public string winSceneName = "WinScene";
 
     [Header("UI References")]
     public TextMeshProUGUI healthText;
@@ -16,19 +23,19 @@ public class Castle : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        Debug.Log($"[Castle] Başlangıç canı set edildi: {currentHealth}");
+        Debug.Log($"[Castle] Starting health set: {currentHealth}");
         UpdateUI();
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($"[Castle] TakeDamage çağrıldı! Alınan hasar: {damage}. Mevcut can: {currentHealth}");
+        Debug.Log($"[Castle] TakeDamage called! Damage taken: {damage}. Current health: {currentHealth}");
         
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         
         UpdateUI();
-        Debug.Log($"[Castle] Hasar sonrası yeni can: {currentHealth}");
+        Debug.Log($"[Castle] Health after damage: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -41,27 +48,42 @@ public class Castle : MonoBehaviour
         if (healthText != null)
         {
             healthText.text = currentHealth + " / " + maxHealth;
-            Debug.Log($"[Castle] UI Yazısı güncellendi: {healthText.text}");
+            Debug.Log($"[Castle] UI Text updated: {healthText.text}");
         }
         else
         {
-            Debug.LogWarning("[Castle] UYARI: healthText referansı atanmamış!");
+            Debug.LogWarning("[Castle] WARNING: healthText reference is unassigned!");
         }
 
         if (healthBarFill != null)
         {
             healthBarFill.fillAmount = (float)currentHealth / maxHealth;
-            Debug.Log($"[Castle] UI Bar Fill güncellendi: {healthBarFill.fillAmount}");
+            Debug.Log($"[Castle] UI Bar Fill updated: {healthBarFill.fillAmount}");
         }
         else
         {
-            Debug.LogWarning("[Castle] UYARI: healthBarFill referansı atanmamış!");
+            Debug.LogWarning("[Castle] WARNING: healthBarFill reference is unassigned!");
         }
     }
 
     private void WinGame()
-{
-    Debug.Log("[Castle] Kale yok edildi, WinScene yükleniyor...");
-    SceneManager.LoadScene("WinScene"); // Sahne adının Build Settings'teki ile aynı olduğundan emin ol
-}
+    {
+        if (playerDeckData == null)
+        {
+            Debug.LogError("[Castle] PlayerDeckData is unassigned. Cannot determine next scene.");
+            return;
+        }
+
+        if (playerDeckData.currentRound == 1)
+        {
+            Debug.Log("[Castle] Round 1 complete. Loading Round 2 Draft scene.");
+            playerDeckData.currentRound = 2;
+            SceneManager.LoadScene(round2DraftSceneName);
+        }
+        else
+        {
+            Debug.Log("[Castle] Final round complete. Loading WinScene.");
+            SceneManager.LoadScene(winSceneName);
+        }
+    }
 }
