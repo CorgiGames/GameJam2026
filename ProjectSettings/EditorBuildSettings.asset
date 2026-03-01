@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LostScreen.unity
     guid: a29f2b4d4d98cfd4482da4495eb67578
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: c96ce180aacf224468d9335034af701a
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: cee6f6d806ef1104280560516d393025
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
