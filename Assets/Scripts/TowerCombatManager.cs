@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // Required for Scene transition
+using UnityEngine.SceneManagement; 
 
 public class TowerCombatManager : MonoBehaviour
 {
@@ -11,7 +11,8 @@ public class TowerCombatManager : MonoBehaviour
     [Header("UI References")]
     public Transform handPanel;
     public GameObject cardPrefab;
-    
+    public TMPro.TextMeshProUGUI cardsLeftText;
+
     [Header("Scene Management")]
     public string lostSceneName = "LostScreen";
 
@@ -21,13 +22,13 @@ public class TowerCombatManager : MonoBehaviour
     [Header("Gameplay Mechanics")]
     public float cardPlayCooldown = 2f;
     private float lastCardPlayTime = -100f;
+    private int totalPlayableCards;
 
     [Header("VFX")]
     public GameObject turretDestroyVfxPrefab;
 
     private List<CardData> drawPile = new List<CardData>();
     
-    // Flag to prevent multiple triggers
     private bool isGameOver = false;
 
     void Start()
@@ -44,7 +45,7 @@ public class TowerCombatManager : MonoBehaviour
         }
     }
 
-private void CheckGameOverCondition()
+    private void CheckGameOverCondition()
     {
         bool isDeckEmpty = drawPile.Count == 0;
         bool isHandEmpty = handPanel.childCount == 0;
@@ -75,11 +76,21 @@ private void CheckGameOverCondition()
         if (playerDeckData != null && playerDeckData.savedDeck != null)
         {
             drawPile.AddRange(playerDeckData.savedDeck);
+            totalPlayableCards = playerDeckData.savedDeck.Count;
+            UpdateCardsLeftUI(); 
             Debug.Log("Loaded " + drawPile.Count + " cards to Tower Attack scene.");
         }
         else
         {
             Debug.LogError("PlayerDeckData reference is missing or empty!");
+        }
+    }
+
+    private void UpdateCardsLeftUI()
+    {
+        if (cardsLeftText != null)
+        {
+            cardsLeftText.text = "Cards Left: " + totalPlayableCards;
         }
     }
 
@@ -158,6 +169,8 @@ private void CheckGameOverCondition()
         }
 
         lastCardPlayTime = Time.time;
+        totalPlayableCards--;
+        UpdateCardsLeftUI(); 
 
         Debug.Log("Played card: " + cardData.cardName);
 

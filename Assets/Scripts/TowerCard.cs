@@ -34,6 +34,7 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+
     private System.Collections.IEnumerator ApplyTemporaryRangeBuff(float buffedRange, float normalRange, float duration)
     {
         // 1. Set the range to the reduced value
@@ -48,14 +49,14 @@ public class TowerCard : MonoBehaviour, IPointerClickHandler
         Debug.Log("Range Restored to normal.");
     }
 
-public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (combatManager != null && cardData != null)
             {
-                // BUG FIX: Ýþleme baþlamadan önce cooldown kontrolü yap.
-                // Eðer kart oynanamýyorsa, metodu burada tamamen kes.
+                // BUG FIX: Check cooldown before starting the process.
+                // If the card cannot be played, cut the method completely here.
                 if (!combatManager.CanPlayCard()) return;
 
                 if (cardData.cardType == CardType.Unit)
@@ -98,6 +99,4 @@ public void OnPointerClick(PointerEventData eventData)
             }
         }
     }
-
-   
 }
