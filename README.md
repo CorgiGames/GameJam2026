@@ -2,6 +2,14 @@
 
 A Deck-building and Tower Attack game developed in Unity. Players draft a deck of units, buffs, and sabotages using an in-game economy, and then deploy them strategically to destroy enemy castle across multiple rounds.
 
+## About the Project
+This game was developed within 48 hours for the ODTU Kaltev 2026 Game Jam.
+
+**Developers:**
+* Arda Şahin
+* Mustafa Şahin Tavukcu
+* Batuhan Turna
+
 ## Gameplay Mechanics
 
 ### 1. Draft Phase
